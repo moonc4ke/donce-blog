@@ -1,4 +1,5 @@
 class BlogPostsController < ApplicationController
+  allow_unauthenticated_access(only: [ :index, :show ])
   before_action :set_blog_post, only: [ :show, :edit, :update, :destroy ]
 
   def index
