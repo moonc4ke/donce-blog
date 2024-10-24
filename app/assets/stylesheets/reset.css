@@ -50,8 +50,3 @@ h5,
 h6 {
   text-wrap: balance;
 }
-
-#root,
-#__next {
-  isolation: isolate;
-}
