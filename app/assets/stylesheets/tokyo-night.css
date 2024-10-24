@@ -49,14 +49,6 @@ a:hover {
   text-decoration: underline;
 }
 
-.card {
-  background-color: var(--tokyo-bg-secondary);
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-top: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
 input,
 textarea,
 select {
@@ -100,32 +92,6 @@ td {
 th {
   background-color: var(--tokyo-bg-tertiary);
   color: var(--tokyo-text-bright);
-}
-
-.alert {
-  padding: 1rem;
-  border-radius: 4px;
-  margin-top: 1rem;
-}
-
-.alert-info {
-  background-color: rgba(122, 162, 247, 0.1);
-  border-left: 4px solid var(--tokyo-blue);
-}
-
-.alert-success {
-  background-color: rgba(158, 206, 106, 0.1);
-  border-left: 4px solid var(--tokyo-green);
-}
-
-.alert-warning {
-  background-color: rgba(224, 175, 104, 0.1);
-  border-left: 4px solid var(--tokyo-yellow);
-}
-
-.alert-error {
-  background-color: rgba(247, 118, 142, 0.1);
-  border-left: 4px solid var(--tokyo-red);
 }
 
 ::-webkit-scrollbar {
