@@ -18,6 +18,7 @@ servers:
 proxy:
   ssl: true
   host: donce.dev
+  port: 8111
 
 # Credentials for your image host.
 registry:
