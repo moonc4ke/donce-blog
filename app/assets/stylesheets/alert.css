@@ -1,0 +1,29 @@
+.alert {
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.alert--info {
+  background-color: rgba(122, 162, 247, 0.1);
+  color: var(--tokyo-blue);
+  border-left: 4px solid var(--tokyo-blue);
+}
+
+.alert--success {
+  background-color: rgba(158, 206, 106, 0.1);
+  color: var(--tokyo-green);
+  border-left: 4px solid var(--tokyo-green);
+}
+
+.alert--warning {
+  background-color: rgba(224, 175, 104, 0.1);
+  color: var(--tokyo-yellow);
+  border-left: 4px solid var(--tokyo-yellow);
+}
+
+.alert--error {
+  background-color: rgba(247, 118, 142, 0.1);
+  color: var(--tokyo-red);
+  border-left: 4px solid var(--tokyo-red);
+}

@@ -1,0 +1,25 @@
+:root {
+  --content-width: 98rem;
+  --body-padding: 6.4rem;
+  --page-padding: 1.6rem;
+
+  --font-size-xx-small: 0.8rem;
+  --font-size-x-small: 1rem;
+  --font-size-small: 1.1rem;
+  --font-size-medium: 1.2rem;
+  --font-size-large: 1.4rem;
+  --font-size-x-large: 1.6rem;
+  --font-size-xx-large: 1.8rem;
+}
+
+.main {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: var(--page-padding);
+  font-size: var(--font-size-small);
+}
+
+.main__content {
+  margin: 0 auto;
+  max-width: 50rem;
+}

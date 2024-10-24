@@ -1,0 +1,25 @@
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background-color: var(--tokyo-bg-tertiary);
+  color: var(--tokyo-purple);
+  border: 1px solid var(--tokyo-purple);
+}
+
+.btn:hover {
+  background-color: var(--tokyo-purple);
+  color: var(--tokyo-bg-primary);
+}
+
+.btn--delete {
+  background-color: rgba(247, 118, 142, 0.1);
+  color: var(--tokyo-red);
+  border-color: var(--tokyo-red);
+}
+
+.btn--delete:hover {
+  background-color: var(--tokyo-red);
+  color: var(--tokyo-bg-primary);
+}
