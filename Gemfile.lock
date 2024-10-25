@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 7fac5d14d00fcc8dc60b49729abe78223ad3bf00
+  revision: 68714ea8c8dc259d71dc1fc76a7202a483af18c7
   branch: main
   specs:
     actioncable (8.1.0.alpha)
@@ -170,7 +170,7 @@ GEM
       zeitwerk (~> 2.5)
     language_server-protocol (3.17.0.3)
     logger (1.6.1)
-    loofah (2.23.0)
+    loofah (2.23.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
