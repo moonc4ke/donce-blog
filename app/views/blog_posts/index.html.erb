@@ -3,6 +3,13 @@
 <% @blog_posts.each do |blog_post| %>
   <div>
     <h2><%= link_to blog_post.title, blog_post %></h2>
+
+    <% if blog_post.draft? %>
+      <div class="blog-post-status blog-post-status--draft">Draft</div>
+    <% elsif blog_post.scheduled? %>
+      <div class="blog-post-status blog-post-status--scheduled">Scheduled</div>
+    <% end %>
+
     <%= blog_post.body %>
   </div> 
 <% end %>

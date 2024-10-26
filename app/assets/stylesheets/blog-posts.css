@@ -1,0 +1,17 @@
+.blog-post-status {
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin: 0.3rem 0;
+}
+
+.blog-post-status--draft {
+  background-color: rgba(147, 129, 255, 0.1);
+  color: var(--tokyo-purple);
+  border-left: 4px solid var(--tokyo-purple);
+}
+
+.blog-post-status--scheduled {
+  background-color: rgba(125, 207, 255, 0.1);
+  color: var(--tokyo-cyan);
+  border-left: 4px solid var(--tokyo-cyan);
+}
