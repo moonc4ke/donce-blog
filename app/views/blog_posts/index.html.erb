@@ -8,13 +8,14 @@
         <div class="blog-card__content-wrapper">
           <div class="blog-card__content">
             <h2 class="blog-card__title"><%= blog_post.title %></h2>
-            <p class="blog-card__description"><%= blog_post.body %></p>
 
             <% if blog_post.draft? %>
               <div class="blog-post-status blog-post-status--draft">Draft</div>
             <% elsif blog_post.scheduled? %>
               <div class="blog-post-status blog-post-status--scheduled">Scheduled</div>
             <% end %>
+
+            <p class="blog-card__description"><%= blog_post.body %></p>
 
             <p class="blog-card__read-more">Read more</p>
           </div>
