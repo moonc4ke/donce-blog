@@ -1,15 +1,25 @@
 <h1>My Blog</h1>
 
-<% @blog_posts.each do |blog_post| %>
-  <div>
-    <h2><%= link_to blog_post.title, blog_post %></h2>
+<div class="blog-content">
+  <% @blog_posts.each do |blog_post| %>
+    <div class="blog-card">
+      <%= link_to blog_post, class: "blog-card__link" do %>
+        <span class="blog-card__border-outline"></span>
+        <div class="blog-card__content-wrapper">
+          <div class="blog-card__content">
+            <h2 class="blog-card__title"><%= blog_post.title %></h2>
+            <p class="blog-card__description"><%= blog_post.body %></p>
 
-    <% if blog_post.draft? %>
-      <div class="blog-post-status blog-post-status--draft">Draft</div>
-    <% elsif blog_post.scheduled? %>
-      <div class="blog-post-status blog-post-status--scheduled">Scheduled</div>
-    <% end %>
+            <% if blog_post.draft? %>
+              <div class="blog-post-status blog-post-status--draft">Draft</div>
+            <% elsif blog_post.scheduled? %>
+              <div class="blog-post-status blog-post-status--scheduled">Scheduled</div>
+            <% end %>
 
-    <%= blog_post.body %>
-  </div> 
-<% end %>
+            <p class="blog-card__read-more">Read more</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

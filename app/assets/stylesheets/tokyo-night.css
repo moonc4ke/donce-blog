@@ -16,6 +16,9 @@
   --tokyo-green: #9ece6a;
   --tokyo-yellow: #e0af68;
   --tokyo-red: #f7768e;
+
+  /* Single border color for blog cards */
+  --tokyo-border: var(--tokyo-text-bright);
 }
 
 body {

@@ -1,0 +1,118 @@
+.blog-content {
+  margin: 2rem auto;
+  display: flex;
+  justify-content: center;
+  max-width: 50rem;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+}
+
+.blog-card {
+  min-width: 0;
+  flex-basis: 380px;
+}
+
+.blog-card__link {
+  position: relative;
+  display: block;
+  height: 18rem;
+  text-decoration: none;
+  color: var(--tokyo-text-bright);
+}
+
+.blog-card__link:hover {
+  text-decoration: none;
+  color: var(--tokyo-text-bright);
+}
+
+@media (min-width: 640px) {
+  .blog-card__link {
+    height: 20rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .blog-card__link {
+    height: 380px;
+  }
+}
+
+.blog-card__border-outline {
+  position: absolute;
+  inset: 0;
+  border: 2px dashed var(--tokyo-border);
+}
+
+.blog-card__content-wrapper {
+  position: relative;
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
+  border: 2px solid var(--tokyo-border);
+  background-color: var(--tokyo-bg-primary);
+  transition: transform 0.2s;
+}
+
+.blog-card__link:hover .blog-card__content-wrapper {
+  transform: translate(-0.5rem, -0.7rem);
+}
+
+.blog-card__content {
+  width: 100%;
+  position: absolute;
+  padding: 1rem;
+  transition: opacity 0.2s;
+  background-color: var(--tokyo-bg-primary);
+}
+
+@media (min-width: 640px) {
+  .blog-card__content {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .blog-card__content {
+    padding: 2rem;
+  }
+}
+
+.blog-card__link:hover .blog-card__content {
+  position: relative;
+  opacity: 1;
+}
+
+.blog-card__title {
+  margin-top: 1rem;
+  font-size: var(--font-size-medium);
+  font-weight: 500;
+  color: var(--tokyo-text-bright);
+}
+
+@media (min-width: 640px) {
+  .blog-card__title {
+    font-size: var(--font-size-large);
+  }
+}
+
+.blog-card__description {
+  margin-top: 1rem;
+  font-size: var(--font-size-x-small);
+  color: var(--tokyo-text-primary);
+}
+
+@media (min-width: 640px) {
+  .blog-card__description {
+    font-size: var(--font-size-small);
+  }
+}
+
+.blog-card__read-more {
+  margin-top: 2rem;
+  font-weight: bold;
+  color: var(--tokyo-blue);
+}
+
+.blog-card__link:hover .blog-card__read-more {
+  color: var(--tokyo-cyan);
+}
