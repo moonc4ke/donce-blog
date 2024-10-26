@@ -85,7 +85,7 @@
 .blog-card__title {
   margin-top: 1rem;
   font-size: var(--font-size-medium);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--tokyo-text-bright);
 }
 
