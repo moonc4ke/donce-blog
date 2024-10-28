@@ -1,0 +1,57 @@
+.nav-menu {
+  position: relative;
+  width: 100%;
+}
+
+.nav-menu__links {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-menu__link {
+  text-decoration: none;
+}
+
+.nav-menu__background {
+  position: absolute;
+  top: 300%;
+  right: 0;
+  transform: translateY(-50%);
+  height: 100px;
+  width: auto;
+  aspect-ratio: 1;
+  background-image: url("/beerus-pyjamas.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center right;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.nav-menu__link--active {
+  font-weight: bold;
+}
+
+@media screen and (min-width: 481px) {
+  .nav-menu__links {
+    gap: 0.75rem;
+  }
+
+  .nav-menu__background {
+    top: 210%;
+    height: 150px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .nav-menu__links {
+    gap: 1rem;
+  }
+
+  .nav-menu__background {
+    height: 155px;
+  }
+}

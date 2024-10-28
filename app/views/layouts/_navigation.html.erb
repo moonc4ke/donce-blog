@@ -1,7 +1,11 @@
-<div>
-  <%= link_to "Home", root_path %>
-  <% if authenticated? %>
-    <%= link_to "New blog post", new_blog_post_path %>
-    <%= link_to "Log out", session_path, method: :delete, data: { turbo_method: :delete } %>
-  <% end %>
+<div class="nav-menu">
+  <div class="nav-menu__links">
+    <%= link_to "Home", root_path, class: "nav-menu__link" %>
+    <% if authenticated? %>
+      <%= link_to "New blog post", new_blog_post_path, class: "nav-menu__link" %>
+      <%= link_to "Log out", session_path, method: :delete, data: { turbo_method: :delete }, class: "nav-menu__link" %>
+    <% end %>
+  </div>
+  <div class="nav-menu__background"></div>
 </div>
+
