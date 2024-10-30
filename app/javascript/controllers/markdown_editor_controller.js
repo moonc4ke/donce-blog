@@ -52,14 +52,15 @@ export default class extends Controller {
       reader.onload = (e) => {
         const div = document.createElement('div')
         div.className = 'image-preview__item'
+
         div.innerHTML = `
-          <img src="${e.target.result}" 
-               class="image-preview__image" 
-               alt="Preview">
-          <code class="image-preview__markdown">
-            ![${file.name}](/uploads/${file.name})
-          </code>
-        `
+        <img src="${e.target.result}" 
+             class="image-preview__image" 
+             alt="Preview">
+        <code class="image-preview__markdown">
+          ![${file.name}](/rails/active_storage/blobs/redirect/${file.name})
+        </code>
+      `
         this.imagePreviewTarget.appendChild(div)
       }
 

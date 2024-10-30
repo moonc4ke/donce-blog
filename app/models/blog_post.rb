@@ -26,4 +26,10 @@ class BlogPost < ApplicationRecord
   def scheduled?
     published_at? && published_at > Time.current
   end
+
+  def image_urls
+    images.map do |image|
+      Rails.application.routes.url_helpers.rails_blob_path(image, only_path: true)
+    end
+  end
 end

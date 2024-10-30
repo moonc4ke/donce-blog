@@ -8,7 +8,7 @@
   <article class="blog-post__content">
     <h1 class="blog-post__title"><%= @blog_post.title %></h1>
     <div class="blog-post__body">
-      <%= markdown(@blog_post.body).html_safe %>
+      <%= markdown(prepare_markdown(@blog_post)).html_safe %>
     </div>
   </article>
 </div>
