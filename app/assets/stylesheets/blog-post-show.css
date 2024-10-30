@@ -1,0 +1,109 @@
+.blog-post-status {
+  margin: 0.3rem 0;
+}
+
+.blog-post-status--draft {
+  color: var(--tokyo-purple);
+}
+
+.blog-post-status--scheduled {
+  color: var(--tokyo-cyan);
+}
+
+/* Blog Post Show */
+.blog-post {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.blog-post__actions {
+  margin-bottom: 2rem;
+}
+
+.blog-post__actions a {
+  margin-right: 1rem;
+}
+
+.blog-post__title {
+  color: var(--tokyo-text-bright);
+  margin-bottom: 2rem;
+}
+
+.blog-post__body {
+  /* These styles will be applied to the container but not affect the markdown content */
+  margin-top: 1rem;
+}
+
+/* Markdown content styles */
+.blog-post__body h1,
+.blog-post__body h2,
+.blog-post__body h3,
+.blog-post__body h4,
+.blog-post__body h5,
+.blog-post__body h6 {
+  color: var(--tokyo-text-bright);
+  margin: 2rem 0 1rem;
+}
+
+.blog-post__body p {
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.blog-post__body ul,
+.blog-post__body ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.blog-post__body li {
+  margin: 0.5rem 0;
+}
+
+.blog-post__body blockquote {
+  border-left: 3px solid var(--tokyo-purple);
+  margin: 1rem 0;
+  padding-left: 1rem;
+  color: var(--tokyo-text-secondary);
+}
+
+.blog-post__body a {
+  color: var(--tokyo-blue);
+  text-decoration: none;
+}
+
+.blog-post__body a:hover {
+  color: var(--tokyo-cyan);
+  text-decoration: underline;
+}
+
+.blog-post__body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.blog-post__body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.blog-post__body table th,
+.blog-post__body table td {
+  padding: 0.5rem;
+  border: 1px solid var(--tokyo-bg-tertiary);
+}
+
+.blog-post__body table th {
+  background-color: var(--tokyo-bg-tertiary);
+  color: var(--tokyo-text-bright);
+}
+
+.blog-post__body hr {
+  border: none;
+  border-top: 1px solid var(--tokyo-bg-tertiary);
+  margin: 2rem 0;
+}

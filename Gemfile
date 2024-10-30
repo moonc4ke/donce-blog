@@ -61,3 +61,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# Project Gems
+gem "redcarpet"
+gem "rouge"

@@ -1,27 +1,66 @@
-<%= form_with model: blog_post do |form| %>
+<%= form_with model: blog_post, 
+              class: 'blog-post-form',
+              data: { controller: "markdown-editor",
+                     markdown_editor_preview_url_value: preview_path } do |form| %>
   <% if form.object.errors.any? %>
-    <div>
+    <div class="blog-post-form__errors">
       <% form.object.errors.full_messages.each do |message| %>
-        <div>
-          <%= message %>
-        </div>
+        <div class="blog-post-form__error"><%= message %></div>
       <% end %>
     </div>
   <% end %>
-  <div>
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+  
+  <div class="blog-post-form__field">
+    <%= form.label :title, class: 'blog-post-form__label' %>
+    <%= form.text_field :title, class: 'blog-post-form__input' %>
+  </div>
+  
+  <div class="blog-post-form__field">
+    <%= form.label :body, class: 'blog-post-form__label' %>
+    <div class="markdown-editor">
+      <%= form.text_area :body, 
+                        rows: 15, 
+                        class: 'markdown-editor__textarea',
+                        data: { 
+                          markdown_editor_target: "input",
+                          action: "input->markdown-editor#preview"
+                        },
+                        placeholder: "Use Markdown for formatting..." %>
+      <div class="markdown-editor__tips">
+        Markdown supported: **bold**, *italic*, # headers, 
+        ```code blocks```, > quotes, - lists, [links](url), 
+        ![images](url)
+      </div>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :body %>
-    <%= form.text_area :body %>
+  <div class="blog-post-form__field">
+    <%= form.label :images, 'Add Images', class: 'blog-post-form__label' %>
+    <%= form.file_field :images, 
+                       multiple: true,
+                       accept: 'image/*',
+                       class: 'blog-post-form__file-input',
+                       data: { 
+                         markdown_editor_target: "imageInput",
+                         action: "change->markdown-editor#handleImages"
+                       } %>
+    <div data-markdown-editor-target="imagePreview" class="image-preview"></div>
+  </div>
+  
+  <div class="blog-post-form__field">
+    <%= form.label :published_at, class: 'blog-post-form__label' %>
+    <%= form.datetime_select :published_at, 
+                           include_blank: true,
+                           class: 'blog-post-form__select' %>
   </div>
 
-  <div>
-    <%= form.label :published_at %>
-    <%= form.datetime_select :published_at, include_blank: true %>
+  <div class="markdown-preview" 
+       data-markdown-editor-target="preview" 
+       style="display: none;">
+    <h3 class="markdown-preview__title">Preview:</h3>
+    <div data-markdown-editor-target="previewContent" 
+         class="markdown-preview__content"></div>
   </div>
-
-  <%= form.button class: 'btn' %>
+  
+  <%= form.button class: 'btn blog-post-form__submit' %>
 <% end %>

@@ -1,4 +1,6 @@
 class BlogPostsController < ApplicationController
+  include MarkdownHelper
+
   allow_unauthenticated_access(only: [ :index, :show ])
   before_action :set_blog_post, only: [ :show, :edit, :update, :destroy ]
 
@@ -36,6 +38,15 @@ class BlogPostsController < ApplicationController
   def destroy
     @blog_post.destroy
     redirect_to root_path
+  end
+
+  def preview
+    if params[:content].present?
+      rendered = markdown(params[:content])
+      render plain: rendered
+    else
+      render plain: ''
+    end
   end
 
   private
