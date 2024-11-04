@@ -45,7 +45,7 @@ class BlogPostsController < ApplicationController
       rendered = markdown(params[:content])
       render plain: rendered
     else
-      render plain: ''
+      render plain: ""
     end
   end
 

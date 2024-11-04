@@ -1,5 +1,5 @@
-require 'rouge'
-require 'rouge/plugins/redcarpet'
+require "rouge"
+require "rouge/plugins/redcarpet"
 
 class MarkdownRenderer < Redcarpet::Render::HTML
   include Rouge::Plugins::Redcarpet
@@ -7,7 +7,7 @@ class MarkdownRenderer < Redcarpet::Render::HTML
   def block_code(code, language)
     lexer = Rouge::Lexer.find_fancy(language, code) || Rouge::Lexers::PlainText.new
     formatter = Rouge::Formatters::HTML.new(
-      css_class: 'highlight',
+      css_class: "highlight",
       line_numbers: false,
       wrap: false
     )
