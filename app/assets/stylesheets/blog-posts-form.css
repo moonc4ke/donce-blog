@@ -35,6 +35,21 @@
   resize: vertical;
 }
 
+.markdown-editor__textarea::-webkit-resizer {
+  background-color: var(--tokyo-text-secondary);
+  border: 1px solid var(--tokyo-text-secondary);
+}
+
+.markdown-editor__textarea::-moz-resizer {
+  background-color: var(--tokyo-text-secondary);
+  border: 1px solid var(--tokyo-text-secondary);
+}
+
+.markdown-editor__textarea::resizer {
+  background-color: var(--tokyo-text-secondary);
+  border: 1px solid var(--tokyo-text-secondary);
+}
+
 .markdown-editor__tips {
   font-size: 0.875rem;
   color: var(--tokyo-text-secondary);
