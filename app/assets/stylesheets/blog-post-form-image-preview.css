@@ -1,0 +1,51 @@
+.image-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.image-preview__item {
+  background-color: var(--tokyo-bg-tertiary);
+  padding: 1rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.image-preview__image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.image-preview__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.btn--primary {
+  background-color: var(--tokyo-blue);
+  color: white;
+}
+
+.btn--primary:hover {
+  background-color: color-mix(in srgb, var(--tokyo-blue) 80%, black);
+}
+
+.btn--small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn--danger {
+  background-color: var(--tokyo-red);
+  color: white;
+}
+
+.btn--danger:hover {
+  background-color: color-mix(in srgb, var(--tokyo-red) 80%, black);
+}

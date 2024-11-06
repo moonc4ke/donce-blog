@@ -10,7 +10,15 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-  resources :blog_posts
+  resources :blog_posts do
+    collection do
+      post :attach_images  # For new blog posts
+    end
+    member do
+      delete "images/:image_id", to: "blog_posts#delete_image", as: :delete_image
+      post :attach_images  # For existing blog posts
+    end
+  end
 
   post "preview", to: "blog_posts#preview"
 

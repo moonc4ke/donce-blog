@@ -1,0 +1,39 @@
+<% if local_assigns[:temp_key].present? && local_assigns[:blob].present? %>
+  <%= turbo_frame_tag "image_#{blob.id}" do %>
+    <div class="image-preview__item">
+      <%= image_tag url_for(blob), class: "image-preview__image" %>
+      <div class="image-preview__actions">
+        <button class="btn btn--small btn--primary"
+                data-action="click->image-upload#insertToEditor"
+                data-markdown="![<%= blob.filename %>](<%= rails_blob_path(blob) %>)">
+          Insert into Editor
+        </button>
+        <%= button_to "Remove",
+                     delete_image_blog_post_path(id: 'new', image_id: blob.id, temp_key: temp_key),
+                     method: :delete,
+                     class: "btn btn--small btn--danger",
+                     data: { turbo_confirm: "Are you sure?" } %>
+      </div>
+    </div>
+  <% end %>
+<% elsif blog_post&.images&.attached? %>
+  <% blog_post.images.each do |image| %>
+    <%= turbo_frame_tag "image_#{image.id}" do %>
+      <div class="image-preview__item">
+        <%= image_tag image, class: "image-preview__image" %>
+        <div class="image-preview__actions">
+          <button class="btn btn--small btn--primary"
+                  data-action="click->image-upload#insertToEditor"
+                  data-markdown="![<%= image.filename %>](<%= rails_blob_path(image) %>)">
+            Insert into Editor
+          </button>
+          <%= button_to "Remove",
+                       delete_image_blog_post_path(blog_post, image_id: image.id),
+                       method: :delete,
+                       class: "btn btn--small btn--danger",
+                       data: { turbo_confirm: "Are you sure?" } %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

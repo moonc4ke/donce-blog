@@ -1,0 +1,3 @@
+<%= turbo_stream.append "image_preview" do %>
+  <%= render "image_preview", blog_post: @blog_post, temp_key: params[:temp_key], blob: @blob %>
+<% end %>

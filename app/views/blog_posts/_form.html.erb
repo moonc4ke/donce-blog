@@ -34,17 +34,25 @@
     </div>
   </div>
 
-  <div class="blog-post-form__field">
+  <div class="blog-post-form__field" 
+       data-controller="image-upload"
+       data-image-upload-temp-key-value="<%= @temp_key if blog_post.new_record? %>"
+       data-image-upload-upload-url-value="<%= blog_post.new_record? ? attach_images_blog_posts_path : attach_images_blog_post_path(blog_post) %>">
     <%= form.label :images, 'Add Images', class: 'blog-post-form__label' %>
-    <%= form.file_field :images, 
+    <%= form.file_field :images,
                        multiple: true,
                        accept: 'image/*',
                        class: 'blog-post-form__file-input',
-                       data: { 
-                         markdown_editor_target: "imageInput",
-                         action: "change->markdown-editor#handleImages"
+                       data: {
+                         image_upload_target: "input",
+                         action: "change->image-upload#handleUpload"
                        } %>
-    <div data-markdown-editor-target="imagePreview" class="image-preview"></div>
+
+    <%= turbo_frame_tag "image_preview" do %>
+      <div class="image-preview" data-image-upload-target="preview">
+        <%= render "image_preview", blog_post: blog_post %>
+      </div>
+    <% end %>
   </div>
   
   <div class="blog-post-form__field">

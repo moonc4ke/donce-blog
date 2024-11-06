@@ -42,29 +42,4 @@ export default class extends Controller {
       this.previewTarget.style.display = 'none'
     }
   }
-
-  handleImages(event) {
-    this.imagePreviewTarget.innerHTML = ''
-
-    Array.from(event.target.files).forEach(file => {
-      const reader = new FileReader()
-
-      reader.onload = (e) => {
-        const div = document.createElement('div')
-        div.className = 'image-preview__item'
-
-        div.innerHTML = `
-        <img src="${e.target.result}" 
-             class="image-preview__image" 
-             alt="Preview">
-        <code class="image-preview__markdown">
-          ![${file.name}](/rails/active_storage/blobs/redirect/${file.name})
-        </code>
-      `
-        this.imagePreviewTarget.appendChild(div)
-      }
-
-      reader.readAsDataURL(file)
-    })
-  }
 }
