@@ -61,24 +61,28 @@ class BlogPostsController < ApplicationController
   end
 
   def attach_images
-    @blob = ActiveStorage::Blob.create_and_upload!(
-      io: params[:images].first,
-      filename: params[:images].first.original_filename,
-      content_type: params[:images].first.content_type
-    )
+    @blobs = params[:images].map do |image|
+      ActiveStorage::Blob.create_and_upload!(
+        io: image,
+        filename: image.original_filename,
+        content_type: image.content_type
+      )
+    end
 
-    # Attach to blog post if it exists, otherwise just create blob
     @blog_post = BlogPost.find(params[:id]) unless params[:temp_key].present?
-    @blog_post&.images&.attach(@blob)
+    @blog_post&.images&.attach(@blobs) if @blog_post
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.append("images_list",
-          partial: "image_preview",
-          locals: params[:temp_key].present? ?
-            { temp_key: params[:temp_key], blob: @blob } :
-            { blog_post: @blog_post, blob: @blob }
-        )
+        renders = @blobs.map do |blob|
+          turbo_stream.append("images_list",
+            partial: "image_preview",
+            locals: params[:temp_key].present? ?
+              { temp_key: params[:temp_key], blob: blob } :
+              { blog_post: @blog_post, blob: blob }
+          )
+        end
+        render turbo_stream: renders
       end
     end
   end
