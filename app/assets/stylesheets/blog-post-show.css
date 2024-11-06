@@ -28,6 +28,7 @@
 .blog-post__title {
   color: var(--tokyo-text-bright);
   margin-bottom: 2rem;
+  font-size: var(--font-size-xxx-large);
 }
 
 .blog-post__body {
