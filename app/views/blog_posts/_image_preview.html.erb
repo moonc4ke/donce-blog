@@ -5,12 +5,13 @@
       <div class="image-preview__actions">
         <button class="btn btn--small btn--primary"
                 data-action="click->image-upload#insertToEditor"
-                data-markdown="![<%= blob.filename %>](<%= rails_blob_path(blob) %>)">
+                data-markdown="![<%= blob.filename %>](<%= url_for(blob) %>)">
           Insert into Editor
         </button>
         <%= button_to "Remove",
                      delete_image_blog_post_path(id: 'new', image_id: blob.id, temp_key: temp_key),
                      method: :delete,
+                     form: { class: "button_to" },  # Add form class
                      class: "btn btn--small btn--danger",
                      data: { turbo_confirm: "Are you sure?" } %>
       </div>
@@ -20,16 +21,17 @@
   <% blog_post.images.each do |image| %>
     <%= turbo_frame_tag "image_#{image.id}" do %>
       <div class="image-preview__item">
-        <%= image_tag image, class: "image-preview__image" %>
+        <%= image_tag url_for(image), class: "image-preview__image" %>
         <div class="image-preview__actions">
           <button class="btn btn--small btn--primary"
                   data-action="click->image-upload#insertToEditor"
-                  data-markdown="![<%= image.filename %>](<%= rails_blob_path(image) %>)">
+                  data-markdown="![<%= image.filename %>](<%= url_for(image) %>)">
             Insert into Editor
           </button>
           <%= button_to "Remove",
                        delete_image_blog_post_path(blog_post, image_id: image.id),
                        method: :delete,
+                       form: { class: "button_to" },  # Add form class
                        class: "btn btn--small btn--danger",
                        data: { turbo_confirm: "Are you sure?" } %>
         </div>

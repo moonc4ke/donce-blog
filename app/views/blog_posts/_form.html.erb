@@ -1,7 +1,13 @@
 <%= form_with model: blog_post, 
               class: 'blog-post-form',
-              data: { controller: "markdown-editor",
-                     markdown_editor_preview_url_value: preview_path } do |form| %>
+              data: {
+                controller: "image-upload",
+                image_upload_temp_key_value: (@temp_key if blog_post.new_record?),
+                image_upload_upload_url_value: (blog_post.new_record? ? attach_images_blog_posts_path : attach_images_blog_post_path(blog_post))
+              } do |form| %>
+  <%= hidden_field_tag :temp_image_ids, "", data: { image_upload_target: "imageIds" } %>
+  <%= hidden_field_tag :temp_key, @temp_key if @temp_key.present? %>
+
   <% if form.object.errors.any? %>
     <div class="blog-post-form__errors">
       <% form.object.errors.full_messages.each do |message| %>
@@ -15,7 +21,9 @@
     <%= form.text_field :title, class: 'blog-post-form__input' %>
   </div>
   
-  <div class="blog-post-form__field">
+  <div class="blog-post-form__field"
+       data-controller="markdown-editor"
+       data-markdown-editor-preview-url-value="<%= preview_path %>">
     <%= form.label :body, class: 'blog-post-form__label' %>
     <div class="markdown-editor">
       <%= form.text_area :body, 
@@ -32,12 +40,16 @@
         ![images](url)
       </div>
     </div>
+    <div class="markdown-preview" 
+         data-markdown-editor-target="preview" 
+         style="display: none;">
+      <h3 class="markdown-preview__title">Preview:</h3>
+      <div data-markdown-editor-target="previewContent" 
+           class="markdown-preview__content"></div>
+    </div>
   </div>
 
-  <div class="blog-post-form__field" 
-       data-controller="image-upload"
-       data-image-upload-temp-key-value="<%= @temp_key if blog_post.new_record? %>"
-       data-image-upload-upload-url-value="<%= blog_post.new_record? ? attach_images_blog_posts_path : attach_images_blog_post_path(blog_post) %>">
+  <div class="blog-post-form__field">
     <%= form.label :images, 'Add Images', class: 'blog-post-form__label' %>
     <%= form.file_field :images,
                        multiple: true,
@@ -47,14 +59,13 @@
                          image_upload_target: "input",
                          action: "change->image-upload#handleUpload"
                        } %>
-
-    <%= turbo_frame_tag "image_preview" do %>
-      <div class="image-preview" data-image-upload-target="preview">
-        <%= render "image_preview", blog_post: blog_post %>
+    <div id="preview_container" class="image-preview" data-image-upload-target="preview">
+      <div id="images_list">
+        <%= render partial: "image_preview", locals: { blog_post: blog_post } %>
       </div>
-    <% end %>
+    </div>
   </div>
-  
+
   <div class="blog-post-form__field">
     <%= form.label :published_at, class: 'blog-post-form__label' %>
     <%= form.datetime_select :published_at, 
@@ -62,13 +73,7 @@
                            class: 'blog-post-form__select' %>
   </div>
 
-  <div class="markdown-preview" 
-       data-markdown-editor-target="preview" 
-       style="display: none;">
-    <h3 class="markdown-preview__title">Preview:</h3>
-    <div data-markdown-editor-target="previewContent" 
-         class="markdown-preview__content"></div>
-  </div>
-  
-  <%= form.button class: 'btn blog-post-form__submit' %>
+  <% if !blog_post.persisted? %>
+    <%= form.submit "Create Blog post", class: 'btn blog-post-form__submit' %>
+  <% end %>
 <% end %>

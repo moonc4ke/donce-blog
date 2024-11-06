@@ -19,11 +19,10 @@ class BlogPostsController < ApplicationController
   def create
     @blog_post = BlogPost.new(blog_post_params)
 
-    if params[:temp_key].present?
-      temp_blobs = ActiveStorage::Blob.where(id: params[:temp_image_ids].split(","))
-      temp_blobs.each do |blob|
-        @blog_post.images.attach(blob)
-      end
+    # Attach any temporary blobs
+    if params[:temp_image_ids].present?
+      blobs = ActiveStorage::Blob.where(id: params[:temp_image_ids].split(","))
+      @blog_post.images.attach(blobs)
     end
 
     if @blog_post.save
@@ -35,11 +34,13 @@ class BlogPostsController < ApplicationController
   end
 
   def edit
+    @blog_post.assign_attributes(blog_post_params) if params[:blog_post].present?
+    render :edit
   end
 
   def update
     if @blog_post.update(blog_post_params)
-      redirect_to @blog_post
+      redirect_to @blog_post, notice: "Blog post was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -60,30 +61,24 @@ class BlogPostsController < ApplicationController
   end
 
   def attach_images
-    # params.permit(:temp_key, images: [])
+    @blob = ActiveStorage::Blob.create_and_upload!(
+      io: params[:images].first,
+      filename: params[:images].first.original_filename,
+      content_type: params[:images].first.content_type
+    )
 
-    if params[:temp_key].present?
-      # Handle uploads for new blog posts
-      @blob = ActiveStorage::Blob.create_and_upload!(
-        io: params[:images].first,
-        filename: params[:images].first.original_filename,
-        content_type: params[:images].first.content_type
-      )
+    # Attach to blog post if it exists, otherwise just create blob
+    @blog_post = BlogPost.find(params[:id]) unless params[:temp_key].present?
+    @blog_post&.images&.attach(@blob)
 
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.append("image_preview",
-            partial: "image_preview",
-            locals: { temp_key: params[:temp_key], blob: @blob })
-        end
-      end
-    else
-      # Handle uploads for existing blog posts
-      @blog_post = BlogPost.find(params[:id])
-      @blog_post.images.attach(params[:images])
-
-      respond_to do |format|
-        format.turbo_stream
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.append("images_list",
+          partial: "image_preview",
+          locals: params[:temp_key].present? ?
+            { temp_key: params[:temp_key], blob: @blob } :
+            { blog_post: @blog_post, blob: @blob }
+        )
       end
     end
   end
@@ -105,7 +100,7 @@ class BlogPostsController < ApplicationController
   private
 
   def blog_post_params
-    params.require(:blog_post).permit(:title, :body, :published_at, images: [])
+    params.require(:blog_post).permit(:title, :body, :published_at)
   end
 
   def set_blog_post

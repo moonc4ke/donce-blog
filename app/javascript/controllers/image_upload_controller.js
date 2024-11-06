@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "preview"]
+  static targets = ["input", "preview", "imageIds"]
   static values = {
     uploadUrl: String,
     tempKey: { type: String, default: '' }
@@ -36,6 +36,7 @@ export default class extends Controller {
     Array.from(event.target.files).forEach(file => {
       formData.append('images[]', file)
     })
+
     if (this.hasTempKeyValue) {
       formData.append('temp_key', this.tempKeyValue)
     }
@@ -54,7 +55,13 @@ export default class extends Controller {
       })
       .then(html => {
         Turbo.renderStreamMessage(html)
-        event.target.value = ''  // Clear the file input
+        if (this.hasTempKeyValue && this.hasImageIdsTarget) {
+          const blobId = html.match(/image_(\d+)/)[1]
+          const currentIds = this.imageIdsTarget.value.split(',').filter(Boolean)
+          currentIds.push(blobId)
+          this.imageIdsTarget.value = currentIds.join(',')
+        }
+        event.target.value = ''
       })
       .catch(error => {
         console.error('Upload failed:', error)
