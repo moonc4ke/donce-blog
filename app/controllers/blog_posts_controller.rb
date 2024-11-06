@@ -2,7 +2,7 @@ class BlogPostsController < ApplicationController
   include MarkdownHelper
 
   allow_unauthenticated_access(only: [ :index, :show ])
-  before_action :set_blog_post, only: [ :show, :edit, :update, :destroy, :delete_image ]
+  before_action :set_blog_post, only: [ :show, :edit, :update, :destroy, :delete_image ], if: -> { params[:id].present? }
 
   def index
     @blog_posts = authenticated? ? BlogPost.sorted : BlogPost.published.sorted
@@ -89,11 +89,22 @@ class BlogPostsController < ApplicationController
 
   def delete_image
     if params[:temp_key].present?
+      # Find the temporary image using the blob ID
       blob = ActiveStorage::Blob.find_by(id: params[:image_id])
-      blob&.purge
+      if blob
+        blob.purge
+      else
+        flash[:error] = "Temporary image not found or already deleted"
+      end
     else
-      image = @blog_post.images.find(params[:image_id])
-      image.purge
+      # Ensure @blog_post is set for deleting permanent images
+      @blog_post ||= BlogPost.find(params[:id])
+      image = @blog_post.images.find_by(id: params[:image_id])
+      if image
+        image.purge
+      else
+        flash[:error] = "Image not found or already deleted"
+      end
     end
 
     respond_to do |format|

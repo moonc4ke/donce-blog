@@ -11,7 +11,7 @@
         <button class="btn btn--small btn--danger"
                 data-controller="delete-button"
                 data-action="click->delete-button#confirmAndDelete"
-                data-delete-button-url-value="<%= delete_image_blog_post_path(id: 'new', image_id: blob.id, temp_key: temp_key) %>"
+                data-delete-button-url-value="<%= delete_temp_image_blog_posts_path(image_id: blob.id, temp_key: temp_key) %>"
                 data-delete-button-confirm-value="Are you sure?">
           Remove
         </button>
