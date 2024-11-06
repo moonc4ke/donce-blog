@@ -1,4 +1,4 @@
-<%= form_with model: blog_post, 
+<%= form_with model: blog_post,
               class: 'blog-post-form',
               data: {
                 controller: "image-upload",
@@ -61,19 +61,18 @@
                        } %>
     <div id="preview_container" class="image-preview" data-image-upload-target="preview">
       <div id="images_list">
-        <%= render partial: "image_preview", locals: { blog_post: blog_post } %>
+        <%= render "image_preview", blog_post: blog_post %>
       </div>
     </div>
   </div>
-
+  
   <div class="blog-post-form__field">
     <%= form.label :published_at, class: 'blog-post-form__label' %>
     <%= form.datetime_select :published_at, 
                            include_blank: true,
                            class: 'blog-post-form__select' %>
   </div>
-
-  <% if !blog_post.persisted? %>
-    <%= form.submit "Create Blog post", class: 'btn blog-post-form__submit' %>
-  <% end %>
+  
+  <%= form.submit blog_post.new_record? ? "Create Blog post" : "Update Blog post", 
+                 class: 'btn blog-post-form__submit' %>
 <% end %>

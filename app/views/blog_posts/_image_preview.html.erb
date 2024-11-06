@@ -8,12 +8,13 @@
                 data-markdown="![<%= blob.filename %>](<%= url_for(blob) %>)">
           Insert into Editor
         </button>
-        <%= button_to "Remove",
-                     delete_image_blog_post_path(id: 'new', image_id: blob.id, temp_key: temp_key),
-                     method: :delete,
-                     form: { class: "button_to" },  # Add form class
-                     class: "btn btn--small btn--danger",
-                     data: { turbo_confirm: "Are you sure?" } %>
+        <button class="btn btn--small btn--danger"
+                data-controller="delete-button"
+                data-action="click->delete-button#confirmAndDelete"
+                data-delete-button-url-value="<%= delete_image_blog_post_path(id: 'new', image_id: blob.id, temp_key: temp_key) %>"
+                data-delete-button-confirm-value="Are you sure?">
+          Remove
+        </button>
       </div>
     </div>
   <% end %>
@@ -28,12 +29,13 @@
                   data-markdown="![<%= image.filename %>](<%= url_for(image) %>)">
             Insert into Editor
           </button>
-          <%= button_to "Remove",
-                       delete_image_blog_post_path(blog_post, image_id: image.id),
-                       method: :delete,
-                       form: { class: "button_to" },  # Add form class
-                       class: "btn btn--small btn--danger",
-                       data: { turbo_confirm: "Are you sure?" } %>
+          <button class="btn btn--small btn--danger"
+                  data-controller="delete-button"
+                  data-action="click->delete-button#confirmAndDelete"
+                  data-delete-button-url-value="<%= delete_image_blog_post_path(blog_post, image_id: image.id) %>"
+                  data-delete-button-confirm-value="Are you sure?">
+            Remove
+          </button>
         </div>
       </div>
     <% end %>
