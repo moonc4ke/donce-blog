@@ -1,34 +1,130 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "preview", "imageIds"]
+  static targets = [
+    "input",
+    "preview",
+    "imageIds",
+    "modal",
+    "widthType",
+    "heightType",
+    "widthInput",
+    "heightInput"
+  ]
+
   static values = {
     uploadUrl: String,
     tempKey: { type: String, default: '' }
   }
 
+  connect() {
+    if (this.hasModalTarget) {
+      document.addEventListener('click', this.handleClickOutside.bind(this))
+    }
+  }
+
+  disconnect() {
+    if (this.hasModalTarget) {
+      document.removeEventListener('click', this.handleClickOutside.bind(this))
+    }
+  }
+
+  handleClickOutside = (event) => {
+    if (!this.hasModalTarget) return
+
+    const modalContainer = this.modalTarget.querySelector('.image-modal__container')
+    if (!modalContainer) return
+
+    if (this.modalTarget.classList.contains('image-modal--visible') &&
+      !modalContainer.contains(event.target) &&
+      !event.target.closest('[data-action*="image-upload#insertToEditor"]')) {
+      this.closeModal()
+    }
+  }
+
+  toggleWidthInput() {
+    const isAuto = this.widthTypeTarget.value === 'auto'
+    this.widthInputTarget.disabled = isAuto
+    if (isAuto) {
+      this.widthInputTarget.value = ''
+    }
+  }
+
+  toggleHeightInput() {
+    const isAuto = this.heightTypeTarget.value === 'auto'
+    this.heightInputTarget.disabled = isAuto
+    if (isAuto) {
+      this.heightInputTarget.value = ''
+    }
+  }
+
   insertToEditor(event) {
     event.preventDefault()
-    const markdownText = event.currentTarget.dataset.markdown
-    const editor = document.querySelector('.markdown-editor__textarea')
-    if (!editor) return // Guard clause if no editor is found
-
-    const cursorPosition = editor.selectionStart
-    const currentContent = editor.value
-    const newContent = currentContent.slice(0, cursorPosition) +
-      "\n" + markdownText + "\n" +
-      currentContent.slice(cursorPosition)
-
-    editor.value = newContent
-    // Trigger preview update
-    editor.dispatchEvent(new Event('input', { bubbles: true }))
-
+    event.stopPropagation()
     const button = event.currentTarget
-    const originalText = button.textContent
-    button.textContent = "Inserted!"
-    setTimeout(() => {
-      button.textContent = originalText
-    }, 1000)
+    this.currentMarkdown = button.dataset.markdown
+    this.openModal()
+  }
+
+  openModal() {
+    if (this.hasModalTarget) {
+      this.modalTarget.classList.add('image-modal--visible')
+      // Reset inputs
+      this.widthTypeTarget.value = 'px'
+      this.heightTypeTarget.value = 'px'
+      this.widthInputTarget.disabled = false
+      this.heightInputTarget.disabled = false
+      this.widthInputTarget.value = ''
+      this.heightInputTarget.value = ''
+    }
+  }
+
+  closeModal() {
+    if (this.hasModalTarget) {
+      this.modalTarget.classList.remove('image-modal--visible')
+    }
+  }
+
+  confirmDimensions(event) {
+    event.preventDefault()
+    event.stopPropagation()
+
+    const widthType = this.widthTypeTarget.value
+    const heightType = this.heightTypeTarget.value
+    const width = this.widthInputTarget.value
+    const height = this.heightInputTarget.value
+
+    // Parse the current markdown to get the URL
+    const markdownMatch = this.currentMarkdown.match(/!\[(.*?)\]\((.*?)\)/)
+    if (!markdownMatch) return
+
+    const [_, altText, url] = markdownMatch
+
+    // Build markdown with dimensions
+    let markdownText = `![${altText}](${url}`
+
+    const widthValue = widthType === 'auto' ? 'auto' : width
+    const heightValue = heightType === 'auto' ? 'auto' : height
+
+    // Only add dimensions if at least one is specified
+    if (widthValue || heightValue) {
+      markdownText += ` =${widthValue || 'auto'}x${heightValue || 'auto'}`
+    }
+    markdownText += ')'
+
+    const editor = document.querySelector('.markdown-editor__textarea')
+    if (editor) {
+      const cursorPosition = editor.selectionStart
+      const currentContent = editor.value
+      const newContent = currentContent.slice(0, cursorPosition) +
+        "\n" + markdownText + "\n" +
+        currentContent.slice(cursorPosition)
+
+      editor.value = newContent
+      editor.dispatchEvent(new Event('input', { bubbles: true }))
+    }
+
+    this.closeModal()
   }
 
   handleUpload(event) {

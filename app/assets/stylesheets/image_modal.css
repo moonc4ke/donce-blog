@@ -1,0 +1,97 @@
+.image-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(16, 16, 24, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.image-modal--visible {
+  display: flex;
+}
+
+.image-modal__container {
+  background-color: var(--tokyo-bg-primary);
+  border: 1px solid var(--tokyo-text-secondary);
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 1rem;
+  position: relative;
+}
+
+.image-modal__header {
+  margin-bottom: 1.5rem;
+}
+
+.image-modal__title {
+  color: var(--tokyo-text-bright);
+  font-size: var(--font-size-large);
+  font-weight: 600;
+  margin-top: 0;
+}
+
+.image-modal__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.image-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.image-modal__label {
+  color: var(--tokyo-text-bright);
+  font-size: var(--font-size-small);
+}
+
+.image-modal__input-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.image-modal__unit-select {
+  width: 100px;
+  background-color: var(--tokyo-bg-tertiary);
+  border: 1px solid var(--tokyo-text-secondary);
+  color: var(--tokyo-text-primary);
+  padding: 0.5rem;
+  border-radius: 4px;
+  order: -1; /* This puts the select before the input */
+}
+
+.image-modal__input {
+  flex: 1;
+  background-color: var(--tokyo-bg-tertiary);
+  border: 1px solid var(--tokyo-text-secondary);
+  color: var(--tokyo-text-primary);
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.image-modal__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--tokyo-bg-secondary);
+}
+
+.image-modal__input:focus,
+.image-modal__unit-select:focus {
+  outline: none;
+  border-color: var(--tokyo-purple);
+  box-shadow: 0 0 0 2px rgba(187, 154, 247, 0.2);
+}
+
+.image-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}

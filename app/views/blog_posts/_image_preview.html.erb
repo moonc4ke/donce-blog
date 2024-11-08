@@ -5,7 +5,7 @@
       <div class="image-preview__actions">
         <button class="btn btn--small btn--primary"
                 data-action="click->image-upload#insertToEditor"
-                data-markdown="![<%= blob.filename %>](<%= url_for(blob) %>)">
+                data-markdown="![<%= blob.filename %>](<%= rails_blob_path(blob, only_path: true) %>)">
           Insert into Editor
         </button>
         <button class="btn btn--small btn--danger"
@@ -26,7 +26,7 @@
         <div class="image-preview__actions">
           <button class="btn btn--small btn--primary"
                   data-action="click->image-upload#insertToEditor"
-                  data-markdown="![<%= image.filename %>](<%= url_for(image) %>)">
+                  data-markdown="![<%= image.filename %>](<%= rails_blob_path(image, only_path: true) %>)">
             Insert into Editor
           </button>
           <button class="btn btn--small btn--danger"
@@ -41,3 +41,57 @@
     <% end %>
   <% end %>
 <% end %>
+
+<div class="image-modal" data-image-upload-target="modal">
+  <div class="image-modal__container">
+    <div class="image-modal__header">
+      <h3 class="image-modal__title">Set Image Dimensions</h3>
+    </div>
+    <div class="image-modal__content">
+      <div class="image-modal__field">
+        <label class="image-modal__label">Width</label>
+        <div class="image-modal__input-group">
+          <select class="image-modal__unit-select" 
+                  data-image-upload-target="widthType"
+                  data-action="change->image-upload#toggleWidthInput">
+            <option value="px">pixels</option>
+            <option value="auto">auto</option>
+          </select>
+          <input type="number" 
+                 data-image-upload-target="widthInput"
+                 class="image-modal__input" 
+                 placeholder="Width in pixels"
+                 min="1">
+        </div>
+      </div>
+      <div class="image-modal__field">
+        <label class="image-modal__label">Height</label>
+        <div class="image-modal__input-group">
+          <select class="image-modal__unit-select"
+                  data-image-upload-target="heightType"
+                  data-action="change->image-upload#toggleHeightInput">
+            <option value="px">pixels</option>
+            <option value="auto">auto</option>
+          </select>
+          <input type="number" 
+                 data-image-upload-target="heightInput"
+                 class="image-modal__input" 
+                 placeholder="Height in pixels"
+                 min="1">
+        </div>
+      </div>
+      <div class="image-modal__actions">
+        <button type="button" 
+                class="btn btn--delete"
+                data-action="click->image-upload#closeModal">
+          Cancel
+        </button>
+        <button type="button" 
+                class="btn btn--primary"
+                data-action="click->image-upload#confirmDimensions">
+          Insert
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,4 +13,24 @@ class MarkdownRenderer < Redcarpet::Render::HTML
     )
     "<div class=\"highlight\"><pre><code>#{formatter.format(lexer.lex(code))}</code></pre></div>"
   end
+
+  def image(link, title, alt_text)
+    # Check for dimension syntax (=WxH)
+    if link =~ /^(.+?)\s*=(\d+|auto)?x(\d+|auto)?$/
+      url, width, height = $1, $2, $3
+
+      # Build style attribute
+      style = []
+      style << "width: #{width == 'auto' ? 'auto' : width + 'px'}" if width
+      style << "height: #{height == 'auto' ? 'auto' : height + 'px'}" if height
+
+      if style.any?
+        %(<img src="#{url}" alt="#{alt_text}" title="#{title}" style="#{style.join('; ')}">)
+      else
+        %(<img src="#{url}" alt="#{alt_text}" title="#{title}">)
+      end
+    else
+      %(<img src="#{link}" alt="#{alt_text}" title="#{title}">)
+    end
+  end
 end
