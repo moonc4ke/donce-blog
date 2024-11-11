@@ -48,7 +48,7 @@ class BlogPostsController < ApplicationController
 
   def destroy
     @blog_post.destroy
-    redirect_to root_path
+    redirect_to root_path, notice: "Blog post was deleted."
   end
 
   def preview
@@ -61,7 +61,6 @@ class BlogPostsController < ApplicationController
   end
 
   def attach_images
-    # Step 1: Create blobs from uploaded images
     @blobs = params[:images].map do |image|
       ActiveStorage::Blob.create_and_upload!(
         io: image,
@@ -70,15 +69,16 @@ class BlogPostsController < ApplicationController
       )
     end
 
-    # Step 2: Find blog post and attach images if not using temp_key
     @blog_post = BlogPost.find(params[:id]) unless params[:temp_key].present?
     @blog_post&.images&.attach(@blobs) if @blog_post
 
-    # Step 3: Render Turbo Stream response
     respond_to do |format|
       format.turbo_stream do
-        renders = @blobs.map do |blob|
-          turbo_stream.append("images_list",
+        renders = []
+
+        # Add image previews
+        @blobs.each do |blob|
+          renders << turbo_stream.append("images_list",
             partial: "image_preview",
             locals: {
               temp_key: params[:temp_key],
@@ -87,33 +87,74 @@ class BlogPostsController < ApplicationController
             }
           )
         end
+
+        # Add single flash message for all images
+        message = if @blobs.size == 1
+          "✓ #{@blobs.first.filename} uploaded successfully"
+        else
+          "✓ #{@blobs.size} images uploaded successfully"
+        end
+
+        renders << turbo_stream.append("flash-messages",
+          partial: "shared/flash",
+          locals: {
+            type: "notice",
+            message: message
+          }
+        )
+
         render turbo_stream: renders
       end
     end
   end
 
   def delete_image
+    filename = nil
+
     if params[:temp_key].present?
-      # Find the temporary image using the blob ID
       blob = ActiveStorage::Blob.find_by(id: params[:image_id])
       if blob
+        filename = blob.filename
         blob.purge
       else
-        flash[:error] = "Temporary image not found or already deleted"
+        @error_message = "Image not found or already deleted"
       end
     else
-      # Ensure @blog_post is set for deleting permanent images
       @blog_post ||= BlogPost.find(params[:id])
       image = @blog_post.images.find_by(id: params[:image_id])
       if image
+        filename = image.filename
         image.purge
       else
-        flash[:error] = "Image not found or already deleted"
+        @error_message = "Image not found or already deleted"
       end
     end
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove("image_#{params[:image_id]}") }
+      format.turbo_stream do
+        renders = []
+
+        if @error_message
+          renders << turbo_stream.append("flash-messages",
+            partial: "shared/flash",
+            locals: {
+              type: "alert",
+              message: @error_message
+            }
+          )
+        else
+          renders << turbo_stream.remove("image_#{params[:image_id]}")
+          renders << turbo_stream.append("flash-messages",
+            partial: "shared/flash",
+            locals: {
+              type: "notice",
+              message: filename ? "✓ #{filename} removed successfully" : "✓ Image removed successfully"
+            }
+          )
+        end
+
+        render turbo_stream: renders
+      end
     end
   end
 

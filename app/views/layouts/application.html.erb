@@ -22,6 +22,12 @@
   </head>
 
   <body>
+    <div id="flash-messages">
+      <% flash.each do |type, message| %>
+        <%= render "shared/flash", type: type, message: message %>
+      <% end %>
+    </div>
+
     <main class="main">
       <div class="main__content">
         <%= render "layouts/navigation" %>

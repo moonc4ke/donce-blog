@@ -1,0 +1,65 @@
+.flash {
+  padding: 1rem 1.5rem;
+  margin: 1rem;
+  border-radius: 0.5rem;
+  animation: flash-slide-in 0.3s ease-out;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  background-color: var(--tokyo-bg-tertiary);
+  border: 1px solid;
+  min-width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.flash__message {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Notice variant */
+.flash--notice {
+  border-color: var(--tokyo-green);
+}
+
+.flash--notice .flash__message {
+  color: var(--tokyo-green);
+}
+
+/* Alert variant */
+.flash--alert {
+  border-color: var(--tokyo-red);
+}
+
+.flash--alert .flash__message {
+  color: var(--tokyo-red);
+}
+
+/* Fade out modifier */
+.flash--fade-out {
+  animation: flash-fade-out 0.5s ease-out forwards;
+}
+
+@keyframes flash-slide-in {
+  from {
+    transform: translateX(100%) translateY(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes flash-fade-out {
+  from {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(0) translateY(-10px);
+  }
+}
