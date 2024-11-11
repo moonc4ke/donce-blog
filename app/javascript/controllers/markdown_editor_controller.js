@@ -7,12 +7,17 @@ export default class extends Controller {
   }
 
   connect() {
+    this.timeout = null
     this.preview()
   }
 
   preview() {
+    clearTimeout(this.timeout)
+
     if (this.hasInputTarget && this.inputTarget.value.trim()) {
-      this.showPreview()
+      this.timeout = setTimeout(() => {
+        this.showPreview()
+      }, 500)
     } else {
       this.hidePreview()
     }
@@ -28,7 +33,6 @@ export default class extends Controller {
         },
         body: JSON.stringify({ content: this.inputTarget.value })
       })
-
       const html = await response.text()
       this.previewContentTarget.innerHTML = html
       this.previewTarget.style.display = 'block'
@@ -41,5 +45,9 @@ export default class extends Controller {
     if (this.hasPreviewTarget) {
       this.previewTarget.style.display = 'none'
     }
+  }
+
+  disconnect() {
+    clearTimeout(this.timeout)
   }
 }
