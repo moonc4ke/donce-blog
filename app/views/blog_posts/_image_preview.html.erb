@@ -1,4 +1,4 @@
-<% if local_assigns[:temp_key].present? && local_assigns[:blob].present? %>
+<% if local_assigns[:blob].present? %>
   <%= turbo_frame_tag "image_#{blob.id}" do %>
     <div class="image-preview__item">
       <%= image_tag url_for(blob), class: "image-preview__image" %>
@@ -11,7 +11,13 @@
         <button class="btn btn--small btn--danger"
                 data-controller="delete-button"
                 data-action="click->delete-button#confirmAndDelete"
-                data-delete-button-url-value="<%= delete_temp_image_blog_posts_path(image_id: blob.id, temp_key: temp_key) %>"
+                data-delete-button-url-value="<%= 
+                  if local_assigns[:temp_key].present?
+                    delete_temp_image_blog_posts_path(image_id: blob.id, temp_key: temp_key)
+                  else
+                    delete_image_blog_post_path(blog_post, image_id: blob.id)
+                  end 
+                %>"
                 data-delete-button-confirm-value="Are you sure?">
           Remove
         </button>

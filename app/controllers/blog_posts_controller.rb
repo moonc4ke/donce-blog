@@ -61,6 +61,7 @@ class BlogPostsController < ApplicationController
   end
 
   def attach_images
+    # Step 1: Create blobs from uploaded images
     @blobs = params[:images].map do |image|
       ActiveStorage::Blob.create_and_upload!(
         io: image,
@@ -69,17 +70,21 @@ class BlogPostsController < ApplicationController
       )
     end
 
+    # Step 2: Find blog post and attach images if not using temp_key
     @blog_post = BlogPost.find(params[:id]) unless params[:temp_key].present?
     @blog_post&.images&.attach(@blobs) if @blog_post
 
+    # Step 3: Render Turbo Stream response
     respond_to do |format|
       format.turbo_stream do
         renders = @blobs.map do |blob|
           turbo_stream.append("images_list",
             partial: "image_preview",
-            locals: params[:temp_key].present? ?
-              { temp_key: params[:temp_key], blob: blob } :
-              { blog_post: @blog_post, blob: blob }
+            locals: {
+              temp_key: params[:temp_key],
+              blob: blob,
+              blog_post: @blog_post
+            }
           )
         end
         render turbo_stream: renders
