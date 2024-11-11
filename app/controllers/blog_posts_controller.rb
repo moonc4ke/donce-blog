@@ -1,5 +1,6 @@
 class BlogPostsController < ApplicationController
   include MarkdownHelper
+  include BlogPostImages
 
   allow_unauthenticated_access(only: [ :index, :show ])
   before_action :set_blog_post, only: [ :show, :edit, :update, :destroy, :delete_image ], if: -> { params[:id].present? }
@@ -61,51 +62,8 @@ class BlogPostsController < ApplicationController
   end
 
   def attach_images
-    @blobs = params[:images].map do |image|
-      ActiveStorage::Blob.create_and_upload!(
-        io: image,
-        filename: image.original_filename,
-        content_type: image.content_type
-      )
-    end
-
     @blog_post = BlogPost.find(params[:id]) unless params[:temp_key].present?
-    @blog_post&.images&.attach(@blobs) if @blog_post
-
-    respond_to do |format|
-      format.turbo_stream do
-        renders = []
-
-        # Add image previews
-        @blobs.each do |blob|
-          renders << turbo_stream.append("images_list",
-            partial: "image_preview",
-            locals: {
-              temp_key: params[:temp_key],
-              blob: blob,
-              blog_post: @blog_post
-            }
-          )
-        end
-
-        # Add single flash message for all images
-        message = if @blobs.size == 1
-          "✓ #{@blobs.first.filename} uploaded successfully"
-        else
-          "✓ #{@blobs.size} images uploaded successfully"
-        end
-
-        renders << turbo_stream.append("flash-messages",
-          partial: "shared/flash",
-          locals: {
-            type: "notice",
-            message: message
-          }
-        )
-
-        render turbo_stream: renders
-      end
-    end
+    super
   end
 
   def delete_image

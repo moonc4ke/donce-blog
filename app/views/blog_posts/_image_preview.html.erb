@@ -38,7 +38,13 @@
           <button class="btn btn--small btn--danger"
                   data-controller="delete-button"
                   data-action="click->delete-button#confirmAndDelete"
-                  data-delete-button-url-value="<%= delete_image_blog_post_path(blog_post, image_id: image.id) %>"
+                  data-delete-button-url-value="<%= 
+                    if local_assigns[:temp_key].present?
+                      delete_temp_image_blog_posts_path(image_id: image.id, temp_key: local_assigns[:temp_key])
+                    else
+                      delete_image_blog_post_path(blog_post, image_id: image.id)
+                    end
+                  %>"
                   data-delete-button-confirm-value="Are you sure?">
             Remove
           </button>
