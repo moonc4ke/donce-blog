@@ -122,6 +122,20 @@ export default class extends Controller {
 
       editor.value = newContent
       editor.dispatchEvent(new Event('input', { bubbles: true }))
+
+      // Create and render flash message matching your existing implementation
+      const flashMessage = `
+        <turbo-stream action="append" target="flash-messages">
+          <template>
+            <div class="flash flash--notice"
+                 data-controller="flash"
+                 data-action="animationend->flash#remove">
+              <p class="flash__message">✓ Image inserted into editor</p>
+            </div>
+          </template>
+        </turbo-stream>
+      `
+      Turbo.renderStreamMessage(flashMessage)
     }
 
     this.closeModal()

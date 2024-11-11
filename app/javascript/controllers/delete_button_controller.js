@@ -18,11 +18,9 @@ export default class extends Controller {
         credentials: 'same-origin'
       })
 
+      const responseText = await response.text()
       if (response.ok) {
-        const frame = this.element.closest('turbo-frame')
-        if (frame) {
-          frame.remove()
-        }
+        Turbo.renderStreamMessage(responseText)
       }
     }
   }
