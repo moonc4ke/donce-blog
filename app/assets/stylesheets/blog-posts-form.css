@@ -116,13 +116,20 @@
   border-bottom: 1px solid rgba(247, 118, 142, 0.1);
 }
 
-/* Add error state for form inputs */
-.blog-post-form__input--error {
-  border-color: var(--tokyo-red);
-  box-shadow: 0 0 0 1px var(--tokyo-red);
+/* Input error states */
+.blog-post-form__input--error,
+.markdown-editor__textarea--error {
+  border-color: var(--tokyo-red) !important;
+  box-shadow: 0 0 0 1px var(--tokyo-red) !important;
 }
 
-.blog-post-form__input--error:focus {
-  border-color: var(--tokyo-red);
-  box-shadow: 0 0 0 2px rgba(247, 118, 142, 0.2);
+.blog-post-form__input--error:focus,
+.markdown-editor__textarea--error:focus {
+  border-color: var(--tokyo-red) !important;
+  box-shadow: 0 0 0 2px rgba(247, 118, 142, 0.2) !important;
+}
+
+/* Hide the default field_with_errors wrapper that Rails adds */
+.field_with_errors {
+  display: contents;
 }

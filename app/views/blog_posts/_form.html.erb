@@ -26,17 +26,18 @@
 
   <div class="blog-post-form__field">
     <%= form.label :title, class: 'blog-post-form__label' %>
-    <%= form.text_field :title, class: 'blog-post-form__input' %>
+    <%= form.text_field :title, 
+                        class: "blog-post-form__input #{form.object.errors[:title].any? ? 'blog-post-form__input--error' : ''}" %>
   </div>
 
   <div class="blog-post-form__field"
-       data-controller="markdown-editor"
-       data-markdown-editor-preview-url-value="<%= preview_path %>">
+      data-controller="markdown-editor"
+      data-markdown-editor-preview-url-value="<%= preview_path %>">
     <%= form.label :body, class: 'blog-post-form__label' %>
     <div class="markdown-editor">
       <%= form.text_area :body, 
                         rows: 15, 
-                        class: 'markdown-editor__textarea',
+                        class: "markdown-editor__textarea #{form.object.errors[:body].any? ? 'markdown-editor__textarea--error' : ''}",
                         data: { 
                           markdown_editor_target: "input",
                           action: "input->markdown-editor#preview"
@@ -49,11 +50,11 @@
       </div>
     </div>
     <div class="markdown-preview" 
-         data-markdown-editor-target="preview" 
-         style="display: none;">
+        data-markdown-editor-target="preview" 
+        style="display: none;">
       <h3 class="markdown-preview__title">Preview:</h3>
       <div data-markdown-editor-target="previewContent" 
-           class="markdown-preview__content"></div>
+          class="markdown-preview__content"></div>
     </div>
   </div>
 
