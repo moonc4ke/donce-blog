@@ -1,57 +1,45 @@
-<% if local_assigns[:blob].present? %>
-  <%= turbo_frame_tag "image_#{blob.id}" do %>
-    <div class="image-preview__item">
-      <%= image_tag url_for(blob), class: "image-preview__image" %>
-      <div class="image-preview__actions">
-        <button class="btn btn--small btn--primary"
-                data-action="click->image-upload#insertToEditor"
-                data-markdown="![<%= blob.filename %>](<%= rails_blob_path(blob, only_path: true) %>)">
-          Insert into Editor
-        </button>
-        <button class="btn btn--small btn--danger"
-                data-controller="delete-button"
-                data-action="click->delete-button#confirmAndDelete"
-                data-delete-button-url-value="<%= 
-                  if local_assigns[:temp_key].present?
-                    delete_temp_image_blog_posts_path(image_id: blob.id, temp_key: temp_key)
-                  else
-                    delete_image_blog_post_path(blog_post, image_id: blob.id)
-                  end 
-                %>"
-                data-delete-button-confirm-value="Are you sure?">
-          Remove
-        </button>
-      </div>
-    </div>
-  <% end %>
-<% elsif blog_post&.images&.attached? %>
+<% if blog_post %>
   <% blog_post.images.each do |image| %>
-    <%= turbo_frame_tag "image_#{image.id}" do %>
+    <turbo-frame id="image_<%= image.id %>">
       <div class="image-preview__item">
-        <%= image_tag url_for(image), class: "image-preview__image" %>
+        <%= image_tag image, class: "image-preview__image" %>
         <div class="image-preview__actions">
           <button class="btn btn--small btn--primary"
                   data-action="click->image-upload#insertToEditor"
-                  data-markdown="![<%= image.filename %>](<%= rails_blob_path(image, only_path: true) %>)">
+                  data-markdown="![<%= image.filename %>](<%= url_for(image) %>)">
             Insert into Editor
           </button>
           <button class="btn btn--small btn--danger"
                   data-controller="delete-button"
                   data-action="click->delete-button#confirmAndDelete"
-                  data-delete-button-url-value="<%= 
-                    if local_assigns[:temp_key].present?
-                      delete_temp_image_blog_posts_path(image_id: image.id, temp_key: local_assigns[:temp_key])
-                    else
-                      delete_image_blog_post_path(blog_post, image_id: image.id)
-                    end
-                  %>"
+                  data-delete-button-url-value="<%= delete_image_blog_post_path(blog_post, image_id: image.id) %>"
                   data-delete-button-confirm-value="Are you sure?">
             Remove
           </button>
         </div>
       </div>
-    <% end %>
+    </turbo-frame>
   <% end %>
+<% elsif blob %>
+  <turbo-frame id="image_<%= blob.id %>">
+    <div class="image-preview__item">
+      <%= image_tag blob, class: "image-preview__image" %>
+      <div class="image-preview__actions">
+        <button class="btn btn--small btn--primary"
+                data-action="click->image-upload#insertToEditor"
+                data-markdown="![<%= blob.filename %>](<%= url_for(blob) %>)">
+          Insert into Editor
+        </button>
+        <button class="btn btn--small btn--danger"
+                data-controller="delete-button"
+                data-action="click->delete-button#confirmAndDelete"
+                data-delete-button-url-value="<%= delete_temp_image_blog_posts_path(image_id: blob.id, temp_key: temp_key) %>"
+                data-delete-button-confirm-value="Are you sure?">
+          Remove
+        </button>
+      </div>
+    </div>
+  </turbo-frame>
 <% end %>
 
 <div class="image-modal" data-image-upload-target="modal">

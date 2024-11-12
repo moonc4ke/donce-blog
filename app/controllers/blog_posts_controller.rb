@@ -20,10 +20,10 @@ class BlogPostsController < ApplicationController
   def create
     @blog_post = BlogPost.new(blog_post_params)
 
-    # Attach any temporary blobs
-    if params[:temp_image_ids].present?
-      blobs = ActiveStorage::Blob.where(id: params[:temp_image_ids].split(","))
+    if session[:temp_image_ids].present?
+      blobs = ActiveStorage::Blob.where(id: session[:temp_image_ids])
       @blog_post.images.attach(blobs)
+      session.delete(:temp_image_ids)
     end
 
     if @blog_post.save
@@ -67,53 +67,49 @@ class BlogPostsController < ApplicationController
   end
 
   def delete_image
-    filename = nil
+    flash_message = nil
 
     if params[:temp_key].present?
       blob = ActiveStorage::Blob.find_by(id: params[:image_id])
       if blob
-        filename = blob.filename
+        session[:temp_image_ids].delete(params[:image_id].to_i)
         blob.purge
-      else
-        @error_message = "Image not found or already deleted"
+        flash_message = "✓ #{blob.filename} removed successfully"
       end
     else
-      @blog_post ||= BlogPost.find(params[:id])
+      @blog_post = BlogPost.find(params[:id])
       image = @blog_post.images.find_by(id: params[:image_id])
       if image
         filename = image.filename
         image.purge
-      else
-        @error_message = "Image not found or already deleted"
+        flash_message = filename ? "✓ #{filename} removed successfully" : "✓ Image removed successfully"
       end
     end
 
-    respond_to do |format|
-      format.turbo_stream do
-        renders = []
-
-        if @error_message
-          renders << turbo_stream.append("flash-messages",
-            partial: "shared/flash",
-            locals: {
-              type: "alert",
-              message: @error_message
-            }
-          )
-        else
-          renders << turbo_stream.remove("image_#{params[:image_id]}")
-          renders << turbo_stream.append("flash-messages",
-            partial: "shared/flash",
-            locals: {
-              type: "notice",
-              message: filename ? "✓ #{filename} removed successfully" : "✓ Image removed successfully"
-            }
-          )
+    if flash_message
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove("image_#{params[:image_id]}"),
+            turbo_stream.append("flash-messages",
+              partial: "shared/flash",
+              locals: { type: "notice", message: flash_message }
+            )
+          ]
         end
-
-        render turbo_stream: renders
       end
+    else
+      render turbo_stream: turbo_stream.append("flash-messages",
+        partial: "shared/flash",
+        locals: { type: "alert", message: "Image not found" }
+      ), status: :not_found
     end
+
+  rescue => e
+    render turbo_stream: turbo_stream.append("flash-messages",
+      partial: "shared/flash",
+      locals: { type: "alert", message: "Failed to remove image: #{e.message}" }
+    ), status: :unprocessable_entity
   end
 
   private

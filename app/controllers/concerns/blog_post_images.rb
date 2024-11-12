@@ -7,7 +7,13 @@ module BlogPostImages
 
   def attach_images
     @blobs = process_images
-    attach_blobs_to_post if @blog_post
+
+    if params[:temp_key].present?
+      session[:temp_image_ids] ||= []
+      session[:temp_image_ids].concat(@blobs.map(&:id))
+    else
+      @blog_post&.images&.attach(@blobs)
+    end
 
     respond_to do |format|
       format.turbo_stream { render_turbo_stream_response }
@@ -34,10 +40,6 @@ module BlogPostImages
     params[:images].map do |image|
       ImageProcessorService.process(image)
     end
-  end
-
-  def attach_blobs_to_post
-    @blog_post&.images&.attach(@blobs)
   end
 
   def render_turbo_stream_response
