@@ -91,3 +91,38 @@
   margin: 0;
   padding: 0;
 }
+
+.blog-post-form__errors {
+  background-color: var(--tokyo-bg-tertiary);
+  border-left: 4px solid var(--tokyo-red);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.blog-post-form__error-summary {
+  color: var(--tokyo-text-bright);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.blog-post-form__error {
+  color: var(--tokyo-red);
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.blog-post-form__error:not(:last-child) {
+  border-bottom: 1px solid rgba(247, 118, 142, 0.1);
+}
+
+/* Add error state for form inputs */
+.blog-post-form__input--error {
+  border-color: var(--tokyo-red);
+  box-shadow: 0 0 0 1px var(--tokyo-red);
+}
+
+.blog-post-form__input--error:focus {
+  border-color: var(--tokyo-red);
+  box-shadow: 0 0 0 2px rgba(247, 118, 142, 0.2);
+}

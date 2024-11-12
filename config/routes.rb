@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   resources :blog_posts do
     collection do
+      post :save_draft
       delete "images/:image_id", to: "blog_posts#delete_image", as: :delete_temp_image
       post :attach_images  # For new blog posts
     end

@@ -1,9 +1,10 @@
 <%= form_with model: blog_post,
               class: 'blog-post-form',
               data: {
-                controller: "image-upload",
+                controller: "image-upload form-autosave",
                 image_upload_temp_key_value: (@temp_key if blog_post.new_record?),
-                image_upload_upload_url_value: (blog_post.new_record? ? attach_images_blog_posts_path : attach_images_blog_post_path(blog_post))
+                image_upload_upload_url_value: (blog_post.new_record? ? attach_images_blog_posts_path : attach_images_blog_post_path(blog_post)),
+                form_autosave_target: "form"
               } do |form| %>
   <%= hidden_field_tag :temp_image_ids, 
                       session[:temp_image_ids]&.join(','), 
@@ -12,8 +13,13 @@
   
   <% if form.object.errors.any? %>
     <div class="blog-post-form__errors">
+      <div class="blog-post-form__error-summary">
+        <%= pluralize(form.object.errors.count, "error") %> prevented saving:
+      </div>
       <% form.object.errors.full_messages.each do |message| %>
-        <div class="blog-post-form__error"><%= message %></div>
+        <div class="blog-post-form__error">
+          <%= message %>
+        </div>
       <% end %>
     </div>
   <% end %>

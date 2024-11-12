@@ -1,9 +1,11 @@
-<% if blog_post %>
+<% if blog_post&.persisted? %>
   <% blog_post.images.each do |image| %>
-    <%= render "image_preview_item", image: image, blog_post: blog_post %>
+    <%= render "blog_posts/image_preview_item", image: image, blog_post: blog_post %>
   <% end %>
-<% elsif session[:temp_image_ids].present? %>
-  <% ActiveStorage::Blob.where(id: session[:temp_image_ids]).each do |blob| %>
-    <%= render "image_preview_item", blob: blob, temp_key: temp_key %>
+<% elsif @temp_blobs&.any? %>
+  <% @temp_blobs.each do |blob| %>
+    <%= render "blog_posts/image_preview_item", 
+              blob: blob, 
+              temp_key: @temp_key %>
   <% end %>
 <% end %>

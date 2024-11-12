@@ -13,23 +13,51 @@ class BlogPostsController < ApplicationController
   end
 
   def new
-    @blog_post = BlogPost.new
-    @temp_key = SecureRandom.hex(10)
+    @blog_post = BlogPost.new(
+      title: session[:draft_title],
+      body: session[:draft_body]
+    )
+    @temp_key = session[:temp_key] || SecureRandom.hex(10)
+    session[:temp_key] = @temp_key
+
+    if session[:temp_image_ids].present?
+      existing_blobs = ActiveStorage::Blob.where(id: session[:temp_image_ids])
+      session[:temp_image_ids] = existing_blobs.pluck(:id)
+      @temp_blobs = existing_blobs
+    end
+  end
+
+  def save_draft
+    session[:draft_title] = params[:blog_post][:title]
+    session[:draft_body] = params[:blog_post][:body]
+
+    head :ok
   end
 
   def create
     @blog_post = BlogPost.new(blog_post_params)
-
-    if session[:temp_image_ids].present?
-      blobs = ActiveStorage::Blob.where(id: session[:temp_image_ids])
-      @blog_post.images.attach(blobs)
-      session.delete(:temp_image_ids)
-    end
+    @temp_key = params[:temp_key]
 
     if @blog_post.save
-      redirect_to @blog_post
+      if session[:temp_image_ids].present?
+        blobs = ActiveStorage::Blob.where(id: session[:temp_image_ids])
+        @blog_post.images.attach(blobs)
+        session.delete(:temp_image_ids)
+        session.delete(:temp_key)
+        session.delete(:draft_title)
+        session.delete(:draft_body)
+      end
+
+      redirect_to @blog_post, notice: "Blog post was successfully created."
     else
-      @temp_key = params[:temp_key]
+      # Important: Set @temp_blobs for re-rendering
+      @temp_blobs = ActiveStorage::Blob.where(id: session[:temp_image_ids]) if session[:temp_image_ids].present?
+
+      # Keep the form data in session
+      session[:temp_key] = @temp_key
+      session[:draft_title] = @blog_post.title
+      session[:draft_body] = @blog_post.body
+
       render :new, status: :unprocessable_entity
     end
   end

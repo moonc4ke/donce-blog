@@ -11,6 +11,7 @@ module BlogPostImages
     if params[:temp_key].present?
       session[:temp_image_ids] ||= []
       session[:temp_image_ids].concat(@blobs.map(&:id))
+      session[:temp_key] = params[:temp_key]
     else
       attach_blobs_to_post
       if @blog_post && !@blog_post.valid?
