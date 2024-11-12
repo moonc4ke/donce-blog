@@ -12,7 +12,11 @@ module BlogPostImages
       session[:temp_image_ids] ||= []
       session[:temp_image_ids].concat(@blobs.map(&:id))
     else
-      @blog_post&.images&.attach(@blobs)
+      attach_blobs_to_post
+      if @blog_post && !@blog_post.valid?
+        handle_upload_error(StandardError.new(@blog_post.errors.full_messages.join(", ")))
+        return
+      end
     end
 
     respond_to do |format|
@@ -29,10 +33,7 @@ module BlogPostImages
 
     render turbo_stream: turbo_stream.append("flash-messages",
       partial: "shared/flash",
-      locals: {
-        type: "alert",
-        message: "No images selected"
-      }
+      locals: { type: "alert", message: "No images selected" }
     ), status: :unprocessable_entity
   end
 
@@ -40,6 +41,10 @@ module BlogPostImages
     params[:images].map do |image|
       ImageProcessorService.process(image)
     end
+  end
+
+  def attach_blobs_to_post
+    @blog_post&.images&.attach(@blobs)
   end
 
   def render_turbo_stream_response
@@ -52,7 +57,7 @@ module BlogPostImages
   def image_preview_streams
     @blobs.map do |blob|
       turbo_stream.append("images_list",
-        partial: "image_preview",
+        partial: "blog_posts/image_preview_item",
         locals: {
           temp_key: params[:temp_key],
           blob: blob,

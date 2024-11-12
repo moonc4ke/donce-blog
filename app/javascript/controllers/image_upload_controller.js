@@ -159,23 +159,46 @@ export default class extends Controller {
       },
       body: formData
     })
-      .then(response => {
-        if (!response.ok) throw new Error('Upload failed')
+      .then(async response => {
+        if (!response.ok) {
+          const text = await response.text()
+          throw new Error(text || 'Upload failed')
+        }
         return response.text()
       })
       .then(html => {
         Turbo.renderStreamMessage(html)
         if (this.hasTempKeyValue && this.hasImageIdsTarget) {
-          const blobId = html.match(/image_(\d+)/)[1]
-          const currentIds = this.imageIdsTarget.value.split(',').filter(Boolean)
-          currentIds.push(blobId)
-          this.imageIdsTarget.value = currentIds.join(',')
+          const match = html.match(/image_(\d+)/)
+          if (match) {
+            const blobId = match[1]
+            const currentIds = this.imageIdsTarget.value.split(',').filter(Boolean)
+            currentIds.push(blobId)
+            this.imageIdsTarget.value = currentIds.join(',')
+          }
         }
         event.target.value = ''
       })
       .catch(error => {
         console.error('Upload failed:', error)
-        alert('Failed to upload images. Please try again.')
+
+        if (error.message.includes('<turbo-stream')) {
+          Turbo.renderStreamMessage(error.message)
+        } else {
+          const flashMessage = `
+            <turbo-stream action="append" target="flash-messages">
+              <template>
+                <div class="flash flash--alert"
+                     data-controller="flash"
+                     data-action="animationend->flash#remove">
+                  <p class="flash__message">Upload failed. Please try again.</p>
+                </div>
+              </template>
+            </turbo-stream>
+          `
+          Turbo.renderStreamMessage(flashMessage)
+        }
+        event.target.value = ''
       })
   }
 }

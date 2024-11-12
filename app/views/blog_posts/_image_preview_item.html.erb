@@ -1,0 +1,41 @@
+<% if defined?(image) && image %>
+  <turbo-frame id="image_<%= image.id %>">
+    <div class="image-preview__item">
+      <%= image_tag image, class: "image-preview__image" %>
+      <div class="image-preview__actions">
+        <button class="btn btn--small btn--primary"
+                data-action="click->image-upload#insertToEditor"
+                data-markdown="![<%= image.filename %>](<%= url_for(image) %>)">
+          Insert into Editor
+        </button>
+        <button class="btn btn--small btn--danger"
+                data-controller="delete-button"
+                data-action="click->delete-button#confirmAndDelete"
+                data-delete-button-url-value="<%= delete_image_blog_post_path(blog_post, image_id: image.id) %>"
+                data-delete-button-confirm-value="Are you sure?">
+          Remove
+        </button>
+      </div>
+    </div>
+  </turbo-frame>
+<% elsif defined?(blob) && blob %>
+  <turbo-frame id="image_<%= blob.id %>">
+    <div class="image-preview__item">
+      <%= image_tag blob, class: "image-preview__image" %>
+      <div class="image-preview__actions">
+        <button class="btn btn--small btn--primary"
+                data-action="click->image-upload#insertToEditor"
+                data-markdown="![<%= blob.filename %>](<%= url_for(blob) %>)">
+          Insert into Editor
+        </button>
+        <button class="btn btn--small btn--danger"
+                data-controller="delete-button"
+                data-action="click->delete-button#confirmAndDelete"
+                data-delete-button-url-value="<%= delete_temp_image_blog_posts_path(image_id: blob.id, temp_key: temp_key) %>"
+                data-delete-button-confirm-value="Are you sure?">
+          Remove
+        </button>
+      </div>
+    </div>
+  </turbo-frame>
+<% end %>

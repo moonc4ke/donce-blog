@@ -54,29 +54,21 @@
   <div class="blog-post-form__field">
     <%= form.label :images, 'Add Images', class: 'blog-post-form__label' %>
     <%= form.file_field :images,
-                       multiple: true,
-                       accept: 'image/*',
-                       class: 'blog-post-form__file-input',
-                       data: {
-                         image_upload_target: "input",
-                         action: "change->image-upload#handleUpload"
-                       } %>
+                      multiple: true,
+                      accept: 'image/*',
+                      class: 'blog-post-form__file-input',
+                      data: {
+                        image_upload_target: "input",
+                        action: "change->image-upload#handleUpload"
+                      } %>
     <div id="preview_container" class="image-preview" data-image-upload-target="preview">
       <div id="images_list">
-        <% if blog_post.new_record? %>
-          <% if session[:temp_image_ids].present? %>
-            <% ActiveStorage::Blob.where(id: session[:temp_image_ids]).each do |blob| %>
-              <%= render "image_preview", 
-                        temp_key: @temp_key, 
-                        blob: blob, 
-                        blog_post: nil %>
-            <% end %>
-          <% end %>
-        <% else %>
-          <%= render "image_preview", blog_post: blog_post %>
-        <% end %>
+        <%= render "image_preview", 
+                  blog_post: blog_post, 
+                  temp_key: @temp_key %>
       </div>
     </div>
+    <%= render "image_modal" %>
   </div>
 
   <div class="blog-post-form__field">
