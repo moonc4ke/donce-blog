@@ -7,17 +7,18 @@ module BlogPostImages
 
   def attach_images
     @blobs = process_images
-
     if params[:temp_key].present?
       session[:temp_image_ids] ||= []
       session[:temp_image_ids].concat(@blobs.map(&:id))
       session[:temp_key] = params[:temp_key]
+      @images = nil
     else
       attach_blobs_to_post
       if @blog_post && !@blog_post.valid?
         handle_upload_error(StandardError.new(@blog_post.errors.full_messages.join(", ")))
         return
       end
+      @images = @blog_post.images.last(@blobs.size)
     end
 
     respond_to do |format|
@@ -56,15 +57,26 @@ module BlogPostImages
   end
 
   def image_preview_streams
-    @blobs.map do |blob|
-      turbo_stream.append("images_list",
-        partial: "blog_posts/image_preview_item",
-        locals: {
-          temp_key: params[:temp_key],
-          blob: blob,
-          blog_post: @blog_post
-        }
-      )
+    if @images
+      @images.map do |image|
+        turbo_stream.append("images_list",
+          partial: "blog_posts/image_preview_item",
+          locals: {
+            image: image,
+            blog_post: @blog_post
+          }
+        )
+      end
+    else
+      @blobs.map do |blob|
+        turbo_stream.append("images_list",
+          partial: "blog_posts/image_preview_item",
+          locals: {
+            blob: blob,
+            temp_key: params[:temp_key]
+          }
+        )
+      end
     end
   end
 
