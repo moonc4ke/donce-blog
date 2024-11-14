@@ -42,11 +42,12 @@ class BlogPostsController < ApplicationController
       if session[:temp_image_ids].present?
         blobs = ActiveStorage::Blob.where(id: session[:temp_image_ids])
         @blog_post.images.attach(blobs)
-        session.delete(:temp_image_ids)
-        session.delete(:temp_key)
-        session.delete(:draft_title)
-        session.delete(:draft_body)
       end
+
+      session.delete(:temp_image_ids)
+      session.delete(:temp_key)
+      session.delete(:draft_title)
+      session.delete(:draft_body)
 
       redirect_to @blog_post, notice: "Blog post was successfully created."
     else
