@@ -9,7 +9,10 @@ export default class extends Controller {
     "widthType",
     "heightType",
     "widthInput",
-    "heightInput"
+    "heightInput",
+    "progressBar",
+    "progressText",
+    "progressContainer"
   ]
 
   static values = {
@@ -142,8 +145,13 @@ export default class extends Controller {
   }
 
   handleUpload(event) {
+    const files = Array.from(event.target.files)
+    if (!files.length) return
+
+    this.progressContainerTarget.classList.remove('hidden')
+
     const formData = new FormData()
-    Array.from(event.target.files).forEach(file => {
+    files.forEach(file => {
       formData.append('images[]', file)
     })
 
@@ -151,31 +159,69 @@ export default class extends Controller {
       formData.append('temp_key', this.tempKeyValue)
     }
 
-    fetch(this.uploadUrlValue, {
-      method: 'POST',
-      headers: {
-        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
-        'Accept': 'text/vnd.turbo-stream.html'
-      },
-      body: formData
-    })
-      .then(response => {
-        if (!response.ok) throw new Error('Upload failed')
-        return response.text()
-      })
-      .then(html => {
-        Turbo.renderStreamMessage(html)
+    const xhr = new XMLHttpRequest()
+
+    xhr.upload.addEventListener('progress', this.updateProgress.bind(this))
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        Turbo.renderStreamMessage(xhr.responseText)
         if (this.hasTempKeyValue && this.hasImageIdsTarget) {
-          const blobId = html.match(/image_(\d+)/)[1]
-          const currentIds = this.imageIdsTarget.value.split(',').filter(Boolean)
-          currentIds.push(blobId)
-          this.imageIdsTarget.value = currentIds.join(',')
+          const match = xhr.responseText.match(/image_(\d+)/)
+          if (match) {
+            const blobId = match[1]
+            const currentIds = this.imageIdsTarget.value.split(',').filter(Boolean)
+            currentIds.push(blobId)
+            this.imageIdsTarget.value = currentIds.join(',')
+          }
         }
-        event.target.value = ''
-      })
-      .catch(error => {
-        console.error('Upload failed:', error)
-        alert('Failed to upload images. Please try again.')
-      })
+      } else {
+        this.handleUploadError(xhr.responseText)
+      }
+      this.resetProgress()
+      event.target.value = ''
+    }
+
+    xhr.onerror = () => {
+      this.handleUploadError()
+      this.resetProgress()
+      event.target.value = ''
+    }
+
+    xhr.open('POST', this.uploadUrlValue)
+    xhr.setRequestHeader('X-CSRF-Token', document.querySelector('[name="csrf-token"]').content)
+    xhr.setRequestHeader('Accept', 'text/vnd.turbo-stream.html')
+    xhr.send(formData)
+  }
+
+  updateProgress(event) {
+    if (!event.lengthComputable) return
+
+    const progress = Math.round((event.loaded / event.total) * 100)
+    this.progressBarTarget.style.width = `${progress}%`
+    this.progressTextTarget.textContent = `${progress}%`
+  }
+
+  resetProgress() {
+    setTimeout(() => {
+      this.progressContainerTarget.classList.add('hidden')
+      this.progressBarTarget.style.width = '0%'
+      this.progressTextTarget.textContent = '0%'
+    }, 500)
+  }
+
+  handleUploadError(error) {
+    const flashMessage = `
+      <turbo-stream action="append" target="flash-messages">
+        <template>
+          <div class="flash flash--alert"
+               data-controller="flash"
+               data-action="animationend->flash#remove">
+            <p class="flash__message">Upload failed. Please try again.</p>
+          </div>
+        </template>
+      </turbo-stream>
+    `
+    Turbo.renderStreamMessage(error?.includes('<turbo-stream') ? error : flashMessage)
   }
 }

@@ -1,5 +1,6 @@
 class BlogPostsController < ApplicationController
   include MarkdownHelper
+  include BlogPostImages
 
   allow_unauthenticated_access(only: [ :index, :show ])
   before_action :set_blog_post, only: [ :show, :edit, :update, :destroy, :delete_image ], if: -> { params[:id].present? }
@@ -12,23 +13,51 @@ class BlogPostsController < ApplicationController
   end
 
   def new
-    @blog_post = BlogPost.new
-    @temp_key = SecureRandom.hex(10)
+    @blog_post = BlogPost.new(
+      title: session[:draft_title],
+      body: session[:draft_body]
+    )
+    @temp_key = session[:temp_key] || SecureRandom.hex(10)
+    session[:temp_key] = @temp_key
+
+    if session[:temp_image_ids].present?
+      existing_blobs = ActiveStorage::Blob.where(id: session[:temp_image_ids])
+      session[:temp_image_ids] = existing_blobs.pluck(:id)
+      @temp_blobs = existing_blobs
+    end
+  end
+
+  def save_draft
+    session[:draft_title] = params[:blog_post][:title]
+    session[:draft_body] = params[:blog_post][:body]
+
+    head :ok
   end
 
   def create
     @blog_post = BlogPost.new(blog_post_params)
-
-    # Attach any temporary blobs
-    if params[:temp_image_ids].present?
-      blobs = ActiveStorage::Blob.where(id: params[:temp_image_ids].split(","))
-      @blog_post.images.attach(blobs)
-    end
+    @temp_key = params[:temp_key]
 
     if @blog_post.save
-      redirect_to @blog_post
+      if session[:temp_image_ids].present?
+        blobs = ActiveStorage::Blob.where(id: session[:temp_image_ids])
+        @blog_post.images.attach(blobs)
+        session.delete(:temp_image_ids)
+        session.delete(:temp_key)
+        session.delete(:draft_title)
+        session.delete(:draft_body)
+      end
+
+      redirect_to @blog_post, notice: "Blog post was successfully created."
     else
-      @temp_key = params[:temp_key]
+      # Important: Set @temp_blobs for re-rendering
+      @temp_blobs = ActiveStorage::Blob.where(id: session[:temp_image_ids]) if session[:temp_image_ids].present?
+
+      # Keep the form data in session
+      session[:temp_key] = @temp_key
+      session[:draft_title] = @blog_post.title
+      session[:draft_body] = @blog_post.body
+
       render :new, status: :unprocessable_entity
     end
   end
@@ -61,101 +90,54 @@ class BlogPostsController < ApplicationController
   end
 
   def attach_images
-    @blobs = params[:images].map do |image|
-      ActiveStorage::Blob.create_and_upload!(
-        io: image,
-        filename: image.original_filename,
-        content_type: image.content_type
-      )
-    end
-
     @blog_post = BlogPost.find(params[:id]) unless params[:temp_key].present?
-    @blog_post&.images&.attach(@blobs) if @blog_post
-
-    respond_to do |format|
-      format.turbo_stream do
-        renders = []
-
-        # Add image previews
-        @blobs.each do |blob|
-          renders << turbo_stream.append("images_list",
-            partial: "image_preview",
-            locals: {
-              temp_key: params[:temp_key],
-              blob: blob,
-              blog_post: @blog_post
-            }
-          )
-        end
-
-        # Add single flash message for all images
-        message = if @blobs.size == 1
-          "✓ #{@blobs.first.filename} uploaded successfully"
-        else
-          "✓ #{@blobs.size} images uploaded successfully"
-        end
-
-        renders << turbo_stream.append("flash-messages",
-          partial: "shared/flash",
-          locals: {
-            type: "notice",
-            message: message
-          }
-        )
-
-        render turbo_stream: renders
-      end
-    end
+    super
   end
 
   def delete_image
-    filename = nil
+    flash_message = nil
 
     if params[:temp_key].present?
       blob = ActiveStorage::Blob.find_by(id: params[:image_id])
       if blob
-        filename = blob.filename
+        session[:temp_image_ids].delete(params[:image_id].to_i)
         blob.purge
-      else
-        @error_message = "Image not found or already deleted"
+        flash_message = "✓ #{blob.filename} removed successfully"
       end
     else
-      @blog_post ||= BlogPost.find(params[:id])
+      @blog_post = BlogPost.find(params[:id])
       image = @blog_post.images.find_by(id: params[:image_id])
       if image
         filename = image.filename
         image.purge
-      else
-        @error_message = "Image not found or already deleted"
+        flash_message = filename ? "✓ #{filename} removed successfully" : "✓ Image removed successfully"
       end
     end
 
-    respond_to do |format|
-      format.turbo_stream do
-        renders = []
-
-        if @error_message
-          renders << turbo_stream.append("flash-messages",
-            partial: "shared/flash",
-            locals: {
-              type: "alert",
-              message: @error_message
-            }
-          )
-        else
-          renders << turbo_stream.remove("image_#{params[:image_id]}")
-          renders << turbo_stream.append("flash-messages",
-            partial: "shared/flash",
-            locals: {
-              type: "notice",
-              message: filename ? "✓ #{filename} removed successfully" : "✓ Image removed successfully"
-            }
-          )
+    if flash_message
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove("image_#{params[:image_id]}"),
+            turbo_stream.append("flash-messages",
+              partial: "shared/flash",
+              locals: { type: "notice", message: flash_message }
+            )
+          ]
         end
-
-        render turbo_stream: renders
       end
+    else
+      render turbo_stream: turbo_stream.append("flash-messages",
+        partial: "shared/flash",
+        locals: { type: "alert", message: "Image not found" }
+      ), status: :not_found
     end
+
+  rescue => e
+    render turbo_stream: turbo_stream.append("flash-messages",
+      partial: "shared/flash",
+      locals: { type: "alert", message: "Failed to remove image: #{e.message}" }
+    ), status: :unprocessable_entity
   end
 
   private
