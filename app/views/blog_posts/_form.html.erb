@@ -68,6 +68,7 @@
                         image_upload_target: "input",
                         action: "change->image-upload#handleUpload"
                       } %>
+    <%= render "upload_progress" %>
     <div id="preview_container" class="image-preview" data-image-upload-target="preview">
       <div id="images_list">
         <%= render "image_preview", 
