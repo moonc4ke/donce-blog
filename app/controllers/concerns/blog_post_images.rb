@@ -15,7 +15,8 @@ module BlogPostImages
     else
       attach_blobs_to_post
       if @blog_post && !@blog_post.valid?
-        handle_upload_error(StandardError.new(@blog_post.errors.full_messages.join(", ")))
+        error_message = @blog_post.errors&.full_messages&.join(", ") || "Invalid blog post"
+        handle_upload_error(StandardError.new(error_message))
         return
       end
       @images = @blog_post.images.last(@blobs.size)
@@ -100,7 +101,7 @@ module BlogPostImages
 
   def handle_upload_error(error)
     Rails.logger.error "Image upload failed: #{error.message}"
-    Rails.logger.error error.backtrace.join("\n")
+    Rails.logger.error error.backtrace&.join("\n") if error.backtrace
 
     render turbo_stream: turbo_stream.append("flash-messages",
       partial: "shared/flash",
