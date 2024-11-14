@@ -28,7 +28,7 @@ class BlogPost < ApplicationRecord
   validates :title, presence: true
   validates :body, presence: true
   validates :images,
-            content_type: { in: %w[image/png image/jpeg image/gif image/webp], message: "must be a valid image format" },
+            content_type: { in: [ "image/webp" ], message: "must be a valid image format" },
             size: { less_than: 5.megabytes, message: "size must be under 5MB" },
             limit: { max: 10, message: "count must be 10 or less" }
 

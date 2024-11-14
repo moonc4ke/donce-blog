@@ -33,7 +33,8 @@ class ImageProcessorService
     ActiveStorage::Blob.create_and_upload!(
       io: File.open(processed_image.path),
       filename: "#{File.basename(@original_filename, '.*')}.webp",
-      content_type: "image/webp"
+      content_type: "image/webp",
+      identify: false
     )
   end
 end
