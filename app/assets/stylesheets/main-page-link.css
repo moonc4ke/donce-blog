@@ -1,0 +1,17 @@
+.main-page-link {
+  position: absolute;
+  right: 0;
+  transform: unset;
+  top: 3px;
+  left: auto;
+  font-size: var(--font-size-x-large);
+  color: var(--tokyo-cyan);
+}
+
+@media screen and (min-width: 481px) {
+  .main-page-link {
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+}

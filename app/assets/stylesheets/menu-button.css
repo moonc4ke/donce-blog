@@ -1,0 +1,21 @@
+.menu-button {
+  border: 1px solid var(--tokyo-text-bright);
+  height: 48px;
+  padding: 0 20px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+}
+
+.menu-button--primary {
+  background-color: transparent;
+  color: var(--tokyo-text-bright);
+}
+
+.menu-button--primary:hover {
+  box-shadow: 2px 2px 0px #c0caf5;
+}
+
+.menu-button--primary:active {
+  background-color: var(--tokyo-bg-tertiary);
+}
