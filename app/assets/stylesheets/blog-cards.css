@@ -53,8 +53,10 @@
   transition: transform 0.2s;
 }
 
-.blog-card__link:hover .blog-card__content-wrapper {
-  transform: translate(-0.5rem, -0.7rem);
+@media (hover: hover) {
+  .blog-card__link:hover .blog-card__content-wrapper {
+    transform: translate(-0.5rem, -0.7rem);
+  }
 }
 
 .blog-card__content {

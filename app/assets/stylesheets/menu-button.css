@@ -5,6 +5,8 @@
   cursor: pointer;
   font-family: inherit;
   font-weight: 600;
+  box-shadow: 2px 2px 0px #c0caf5;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .menu-button--primary {
@@ -12,10 +14,14 @@
   color: var(--tokyo-text-bright);
 }
 
-.menu-button--primary:hover {
-  box-shadow: 2px 2px 0px #c0caf5;
+/* Only show hover effects on devices that support hover */
+@media (hover: hover) {
+  .menu-button--primary:hover {
+    box-shadow: none;
+  }
 }
 
 .menu-button--primary:active {
   background-color: var(--tokyo-bg-tertiary);
+  box-shadow: none;
 }
