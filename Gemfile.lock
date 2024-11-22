@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 5992f9efde7dcece803594b0e0063cf64b73d40d
+  revision: 9add4d9786266cbebcc44c07963ceb589de9ce79
   branch: main
   specs:
     actioncable (8.1.0.alpha)
@@ -201,7 +201,7 @@ GEM
     matrix (0.4.2)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    minitest (5.25.1)
+    minitest (5.25.2)
     msgpack (1.7.3)
     net-imap (0.5.1)
       date
@@ -263,7 +263,7 @@ GEM
       nokogiri (~> 1.14)
     rainbow (3.1.1)
     rake (13.2.1)
-    rdoc (6.7.0)
+    rdoc (6.8.1)
       psych (>= 4.0.0)
     redcarpet (3.6.0)
     regexp_parser (2.9.2)
