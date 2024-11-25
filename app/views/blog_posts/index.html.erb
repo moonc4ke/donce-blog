@@ -15,7 +15,11 @@
               <div class="blog-post-status blog-post-status--scheduled">Scheduled</div>
             <% end %>
 
-            <p class="blog-card__description"><%= blog_post.body %></p>
+            <p class="blog-card__date">
+              <%= blog_post.published_at&.strftime("%B %-d, %Y") || "Not published yet" %>
+            </p>
+
+            <p class="blog-card__description"><%= blog_post.short_body %></p>
 
             <p class="blog-card__read-more">Read more</p>
           </div>

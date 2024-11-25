@@ -25,7 +25,8 @@ class BlogPost < ApplicationRecord
       }
   end
 
-  validates :title, presence: true
+  validates :title, length: { maximum: 60 }, presence: true
+  validates :short_body, length: { maximum: 80 }, presence: true
   validates :body, presence: true
   validates :images,
             content_type: { in: [ "image/webp" ], message: "must be a valid image format" },

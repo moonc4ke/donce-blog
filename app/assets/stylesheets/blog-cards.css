@@ -110,11 +110,15 @@
 }
 
 .blog-card__read-more {
-  margin-top: 2rem;
+  margin-top: 1rem;
   font-weight: bold;
   color: var(--tokyo-blue);
 }
 
 .blog-card__link:hover .blog-card__read-more {
   color: var(--tokyo-cyan);
+}
+
+.blog-card__date {
+  margin-top: 1rem;
 }
