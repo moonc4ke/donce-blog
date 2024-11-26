@@ -11,7 +11,23 @@ class MarkdownRenderer < Redcarpet::Render::HTML
       line_numbers: false,
       wrap: false
     )
-    "<div class=\"highlight\"><pre><code>#{formatter.format(lexer.lex(code))}</code></pre></div>"
+    formatted_code = formatter.format(lexer.lex(code))
+
+    <<-HTML
+      <div class="code-block" data-controller="copy-code">
+        <div class="code-block__header">
+          <button type="button"#{' '}
+                  class="code-block__copy-btn btn"#{' '}
+                  data-copy-code-target="button"
+                  data-action="click->copy-code#copy">
+            Copy
+          </button>
+        </div>
+        <div class="highlight">
+          <pre><code data-copy-code-target="code">#{formatted_code}</code></pre>
+        </div>
+      </div>
+    HTML
   end
 
   def image(link, title, alt_text)

@@ -22,8 +22,8 @@ module MarkdownHelper
     rendered_html = markdown.render(text)
 
     helpers.sanitize(rendered_html,
-      tags: %w[p br img h1 h2 h3 h4 h5 h6 strong em a ul ol li blockquote pre code table tr td th tbody thead span div],
-      attributes: %w[href src class alt title style])
+      tags: %w[p br img h1 h2 h3 h4 h5 h6 strong em a ul ol li blockquote pre code table tr td th tbody thead span div button],
+      attributes: %w[href src class alt title style data-controller data-action data-copy-code-target type])
   end
 
   def safe_blog_content(blog_post)
