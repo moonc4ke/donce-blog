@@ -1,12 +1,17 @@
-<%= link_to "Edit", edit_blog_post_path(@blog_post) if authenticated? %>
-
 <div class="blog-post">
   <nav class="blog-post__actions">
-    <%= link_to "Edit", edit_blog_post_path(@blog_post) if authenticated? %>
+    <%= if authenticated?
+      button_to "Edit", edit_blog_post_path(@blog_post), class: "btn", method: :get
+    end %>
   </nav>
 
   <div class="blog-post__content">
     <h1 class="blog-post__title"><%= @blog_post.title %></h1>
+
+    <p class="blog-post__date">
+      <%= @blog_post.published_at&.strftime("%B %-d, %Y") || "Not published yet" %>
+    </p>
+
     <div class="blog-post__body">
       <%= safe_blog_content(@blog_post) %>
     </div>

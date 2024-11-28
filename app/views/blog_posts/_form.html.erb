@@ -6,15 +6,18 @@
                 image_upload_upload_url_value: (blog_post.new_record? ? attach_images_blog_posts_path : attach_images_blog_post_path(blog_post)),
                 form_autosave_target: "form"
               } do |form| %>
-  <%= hidden_field_tag :temp_image_ids, 
-                      session[:temp_image_ids]&.join(','), 
-                      data: { image_upload_target: "imageIds" } %>
+  <%= hidden_field_tag :temp_image_ids,
+  session[:temp_image_ids]&.join(","),
+  data: {
+    image_upload_target: "imageIds",
+  } %>
   <%= hidden_field_tag :temp_key, @temp_key if @temp_key.present? %>
-  
+
   <% if form.object.errors.any? %>
     <div class="blog-post-form__errors">
       <div class="blog-post-form__error-summary">
-        <%= pluralize(form.object.errors.count, "error") %> prevented saving:
+        <%= pluralize(form.object.errors.count, "error") %>
+        prevented saving:
       </div>
       <% form.object.errors.full_messages.each do |message| %>
         <div class="blog-post-form__error">
@@ -25,67 +28,87 @@
   <% end %>
 
   <div class="blog-post-form__field">
-    <%= form.label :title, class: 'blog-post-form__label' %>
-    <%= form.text_field :title, 
-                        class: "blog-post-form__input #{form.object.errors[:title].any? ? 'blog-post-form__input--error' : ''}" %>
+    <%= form.label :title, class: "blog-post-form__label" %>
+    <%= form.text_field :title,
+                    maxlength: 60,
+                    class:
+                      "blog-post-form__input #{form.object.errors[:title].any? ? "blog-post-form__input--error" : ""}" %>
+    <small class="blog-post-form__help-text">Maximum 60 characters</small>
   </div>
 
-  <div class="blog-post-form__field"
-      data-controller="markdown-editor"
-      data-markdown-editor-preview-url-value="<%= preview_path %>">
-    <%= form.label :body, class: 'blog-post-form__label' %>
+  <div class="blog-post-form__field">
+    <%= form.label :short_body, "Short Description", class: "blog-post-form__label" %>
+    <%= form.text_field :short_body,
+                    maxlength: 80,
+                    class:
+                      "blog-post-form__input #{form.object.errors[:short_body].any? ? "blog-post-form__input--error" : ""}" %>
+    <small class="blog-post-form__help-text">Maximum 100 characters</small>
+  </div>
+
+  <div
+    class="blog-post-form__field"
+    data-controller="markdown-editor"
+    data-markdown-editor-preview-url-value="<%= preview_path %>"
+  >
+    <%= form.label :body, class: "blog-post-form__label" %>
     <div class="markdown-editor">
-      <%= form.text_area :body, 
-                        rows: 15, 
-                        class: "markdown-editor__textarea #{form.object.errors[:body].any? ? 'markdown-editor__textarea--error' : ''}",
-                        data: { 
-                          markdown_editor_target: "input",
-                          action: "input->markdown-editor#preview"
-                        },
-                        placeholder: "Use Markdown for formatting..." %>
+      <%= form.text_area :body,
+                     rows: 15,
+                     class:
+                       "markdown-editor__textarea #{form.object.errors[:body].any? ? "markdown-editor__textarea--error" : ""}",
+                     data: {
+                       markdown_editor_target: "input",
+                       action: "input->markdown-editor#preview",
+                     },
+                     placeholder: "Use Markdown for formatting..." %>
       <div class="markdown-editor__tips">
-        Markdown supported: **bold**, *italic*, # headers, 
-        ```code blocks```, > quotes, - lists, [links](url), 
-        ![images](url)
+        Markdown supported: **bold**, *italic*, # headers, ```code blocks```, >
+        quotes, - lists, [links](url), ![images](url)
       </div>
     </div>
-    <div class="markdown-preview" 
-        data-markdown-editor-target="preview" 
-        style="display: none;">
+    <div
+      class="markdown-preview"
+      data-markdown-editor-target="preview"
+      style="display: none;"
+    >
       <h3 class="markdown-preview__title">Preview:</h3>
-      <div data-markdown-editor-target="previewContent" 
-          class="markdown-preview__content"></div>
+      <div
+        data-markdown-editor-target="previewContent"
+        class="markdown-preview__content"
+      ></div>
     </div>
   </div>
 
   <div class="blog-post-form__field">
-    <%= form.label :images, 'Add Images', class: 'blog-post-form__label' %>
+    <%= form.label :images, "Add Images", class: "blog-post-form__label" %>
     <%= form.file_field :images,
-                      multiple: true,
-                      accept: 'image/*',
-                      class: 'blog-post-form__file-input',
-                      data: {
-                        image_upload_target: "input",
-                        action: "change->image-upload#handleUpload"
-                      } %>
+                    multiple: true,
+                    accept: "image/*",
+                    class: "blog-post-form__file-input",
+                    data: {
+                      image_upload_target: "input",
+                      action: "change->image-upload#handleUpload",
+                    } %>
     <%= render "upload_progress" %>
-    <div id="preview_container" class="image-preview" data-image-upload-target="preview">
+    <div
+      id="preview_container"
+      class="image-preview"
+      data-image-upload-target="preview"
+    >
       <div id="images_list" class="image-preview__list">
-        <%= render "image_preview", 
-                  blog_post: blog_post, 
-                  temp_key: @temp_key %>
+        <%= render "image_preview", blog_post: blog_post, temp_key: @temp_key %>
       </div>
     </div>
     <%= render "image_modal" %>
   </div>
 
   <div class="blog-post-form__field">
-    <%= form.label :published_at, class: 'blog-post-form__label' %>
-    <%= form.datetime_select :published_at, 
-                           include_blank: true,
-                           class: 'blog-post-form__select' %>
+    <%= form.label :published_at, class: "blog-post-form__label" %>
+    <%= form.datetime_select :published_at,
+                         include_blank: true,
+                         class: "blog-post-form__select" %>
   </div>
 
-  <%= form.submit blog_post.new_record? ? "Create Blog post" : "Update Blog post", 
-                 class: 'btn blog-post-form__submit' %>
+  <%= form.submit blog_post.new_record? ? "Create Blog post" : "Update Blog post",
+              class: "btn blog-post-form__submit" %>
 <% end %>

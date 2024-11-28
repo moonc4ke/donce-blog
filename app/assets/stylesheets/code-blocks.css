@@ -1,0 +1,43 @@
+.code-block {
+  position: relative;
+  margin: 1em 0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.code-block__header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  background: var(--tokyo-bg-secondary);
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+}
+
+.code-block__copy-btn {
+  background-color: var(--tokyo-bg-tertiary);
+  color: var(--tokyo-cyan);
+  border: 1px solid var(--tokyo-cyan);
+  font-size: var(--font-size-xx-small);
+  padding: 0.25rem 0.75rem;
+}
+
+.code-block__copy-btn:hover {
+  background-color: var(--tokyo-cyan);
+  color: var(--tokyo-bg-primary);
+}
+
+.code-block__copy-btn--copied {
+  background-color: var(--tokyo-cyan);
+  color: var(--tokyo-bg-primary);
+}
+
+.code-block .highlight {
+  margin: 0;
+  border-radius: 0 0 4px 4px;
+  border-top: none;
+}
+
+.code-block .highlight pre {
+  margin: 0;
+}

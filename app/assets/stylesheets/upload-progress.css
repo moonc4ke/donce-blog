@@ -28,7 +28,7 @@
 }
 
 .upload-progress__text {
-  font-size: 0.875rem;
+  font-size: var(--font-size-xx-small);
   color: var(--tokyo-text-primary);
   margin-top: 0.5rem;
   text-align: right;

@@ -12,13 +12,11 @@
 
 /* Blog Post Show */
 .blog-post {
-  max-width: 800px;
   margin: 0 auto;
-  padding: 1rem;
 }
 
 .blog-post__actions {
-  margin-bottom: 2rem;
+  margin: 2rem 0;
 }
 
 .blog-post__actions a {
@@ -107,4 +105,9 @@
   border: none;
   border-top: 1px solid var(--tokyo-bg-tertiary);
   margin: 2rem 0;
+}
+
+.blog-post__date {
+  color: var(--tokyo-text-secondary);
+  margin-bottom: 2rem;
 }

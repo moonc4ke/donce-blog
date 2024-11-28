@@ -2,20 +2,19 @@
   margin: 2rem auto;
   display: flex;
   justify-content: center;
-  max-width: 50rem;
   flex-wrap: wrap;
   gap: 2.5rem;
 }
 
 .blog-card {
   min-width: 0;
-  flex-basis: 380px;
+  flex-basis: 400px;
 }
 
 .blog-card__link {
   position: relative;
   display: block;
-  height: 18rem;
+  height: 20rem;
   text-decoration: none;
   color: var(--tokyo-text-bright);
 }
@@ -27,13 +26,13 @@
 
 @media (min-width: 640px) {
   .blog-card__link {
-    height: 20rem;
+    height: 23rem;
   }
 }
 
 @media (min-width: 1024px) {
   .blog-card__link {
-    height: 380px;
+    height: 25rem;
   }
 }
 
@@ -110,11 +109,16 @@
 }
 
 .blog-card__read-more {
-  margin-top: 2rem;
+  margin-top: 1rem;
   font-weight: bold;
   color: var(--tokyo-blue);
 }
 
 .blog-card__link:hover .blog-card__read-more {
   color: var(--tokyo-cyan);
+}
+
+.blog-card__date {
+  margin-top: 1rem;
+  color: var(--tokyo-text-secondary);
 }
