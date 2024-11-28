@@ -10,7 +10,6 @@
   justify-content: flex-end;
   padding: 0.5rem;
   background: var(--tokyo-bg-secondary);
-  border: 1px solid var(--tokyo-text-secondary);
   border-bottom: none;
   border-radius: 4px 4px 0 0;
 }
@@ -29,15 +28,13 @@
 }
 
 .code-block__copy-btn--copied {
-  background-color: var(--tokyo-green);
+  background-color: var(--tokyo-cyan);
   color: var(--tokyo-bg-primary);
-  border-color: var(--tokyo-green);
 }
 
 .code-block .highlight {
   margin: 0;
   border-radius: 0 0 4px 4px;
-  border: 1px solid var(--tokyo-text-secondary);
   border-top: none;
 }
 

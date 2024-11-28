@@ -2,19 +2,8 @@
   background-color: var(--tokyo-bg-tertiary);
   padding: 1rem;
   border-radius: 4px;
-}
-
-.highlight pre {
-  margin: 0;
-  padding: 0;
-}
-
-/* Base code block styling */
-.highlight {
-  background-color: var(--tokyo-bg-tertiary);
-  padding: 1rem;
-  border-radius: 4px;
   color: var(--tokyo-text-bright);
+  overflow-x: auto;
 }
 
 .highlight pre {
@@ -46,9 +35,24 @@
 .highlight .kt {
   /* Keyword Type */
   color: var(--tokyo-purple);
+  font-weight: bold;
 }
 
-.highlight .ss,
+/* Operators */
+.highlight .o,    /* Operator */
+.highlight .ow {
+  /* Operator Word */
+  color: var(--tokyo-purple);
+  font-weight: bold;
+}
+
+/* Punctuation */
+.highlight .p {
+  /* Punctuation */
+  color: var(--tokyo-text-bright);
+}
+
+/* Names */
 .highlight .na,   /* Name Attribute */
 .highlight .bp,   /* Name Builtin Pseudo */
 .highlight .nc,   /* Name Class */
@@ -72,7 +76,6 @@
   color: var(--tokyo-cyan);
 }
 
-/* Override specific name colors */
 .highlight .nf,   /* Name Function */
 .highlight .nx {
   /* Name Other */
@@ -82,6 +85,7 @@
 .highlight .nc {
   /* Name Class */
   color: var(--tokyo-yellow);
+  font-weight: bold;
 }
 
 /* Literals */
@@ -121,22 +125,7 @@
   color: var(--tokyo-yellow);
 }
 
-/* Operators */
-.highlight .o,    /* Operator */
-.highlight .ow {
-  /* Operator Word */
-  color: var(--tokyo-purple);
-}
-
-/* Punctuation */
-.highlight .p {
-  /* Punctuation */
-  color: var(--tokyo-text-bright);
-}
-
-/* Generic */
-.hightlight .n,
-.highlight .nb,
+/* Generics */
 .highlight .g,    /* Generic */
 .highlight .gd,   /* Generic Deleted */
 .highlight .ge,   /* Generic Emph */
@@ -152,14 +141,34 @@
   color: var(--tokyo-text-bright);
 }
 
+.highlight .gs {
+  font-weight: bold;
+}
+
+.highlight .ge {
+  font-style: italic;
+}
+
 /* Error */
 .highlight .err {
-  /* Error */
   color: var(--tokyo-red);
+  background-color: rgba(247, 118, 142, 0.1);
+  font-weight: bold;
 }
 
 /* Whitespace */
 .highlight .w {
-  /* Text Whitespace */
-  color: var(--tokyo-text-bright);
+  /* Whitespace */
+  color: var(--tokyo-text-secondary);
+}
+
+/* Overridden specifics */
+.highlight .gi {
+  background-color: rgba(158, 206, 106, 0.1);
+  color: var(--tokyo-green);
+}
+
+.highlight .gd {
+  background-color: rgba(247, 118, 142, 0.1);
+  color: var(--tokyo-red);
 }
