@@ -4,7 +4,8 @@
   --body-padding: 6.4rem;
   --page-padding: 1.6rem;
 
-  --font-size-xx-small: 0.8rem;
+  --font-size-xxx-small: 0.8rem;
+  --font-size-xx-small: 0.875rem;
   --font-size-x-small: 1rem;
   --font-size-small: 1.1rem;
   --font-size-medium: 1.2rem;
@@ -12,6 +13,20 @@
   --font-size-x-large: 1.6rem;
   --font-size-xx-large: 1.8rem;
   --font-size-xxx-large: 2.2rem;
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    --font-size-xxx-small: 0.7rem;
+    --font-size-xx-small: 0.775rem;
+    --font-size-x-small: 0.9rem;
+    --font-size-small: 1rem;
+    --font-size-medium: 1.1rem;
+    --font-size-large: 1.3rem;
+    --font-size-x-large: 1.5rem;
+    --font-size-xx-large: 1.7rem;
+    --font-size-xxx-large: 1.9rem;
+  }
 }
 
 .main {

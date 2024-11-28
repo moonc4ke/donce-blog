@@ -18,7 +18,7 @@
   background-color: var(--tokyo-bg-tertiary);
   color: var(--tokyo-cyan);
   border: 1px solid var(--tokyo-cyan);
-  font-size: 0.875rem;
+  font-size: var(--font-size-xx-small);
   padding: 0.25rem 0.75rem;
 }
 

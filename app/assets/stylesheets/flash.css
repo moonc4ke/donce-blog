@@ -15,7 +15,7 @@
 
 .flash__message {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--font-size-xx-small);
   line-height: 1.5;
 }
 

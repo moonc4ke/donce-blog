@@ -45,7 +45,7 @@
 }
 
 .markdown-editor__tips {
-  font-size: 0.875rem;
+  font-size: var(--font-size-xx-small);
   color: var(--tokyo-text-secondary);
   margin-top: 0.5rem;
   padding: 0.5rem;
@@ -103,7 +103,7 @@
 .blog-post-form__error {
   color: var(--tokyo-red);
   padding: 0.25rem 0;
-  font-size: 0.9rem;
+  font-size: var(--font-size-xx-small);
 }
 
 .blog-post-form__error:not(:last-child) {
