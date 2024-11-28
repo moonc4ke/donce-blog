@@ -61,15 +61,13 @@
   border: 1px solid var(--tokyo-bg-tertiary);
 }
 
+.markdown-preview img {
+  border-radius: 4px;
+}
+
 .markdown-preview__title {
   color: var(--tokyo-purple);
   margin: 0 0 1rem;
-}
-
-.markdown-preview__content {
-  /* background-color: var(--tokyo-bg-secondary); */
-  /* padding: 1rem; */
-  /* border-radius: 4px; */
 }
 
 /* Rouge Syntax Highlighting */
