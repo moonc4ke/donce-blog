@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 2ab0094ab6e94d30a5a424dc93c2aeb1066cc76b
+  revision: e15be8c98e39a96d33be9331f9649bade402f9bf
   branch: main
   specs:
     actioncable (8.1.0.alpha)
@@ -267,7 +267,7 @@ GEM
       psych (>= 4.0.0)
     redcarpet (3.6.0)
     regexp_parser (2.9.2)
-    reline (0.5.11)
+    reline (0.5.12)
       io-console (~> 0.5)
     rexml (3.3.9)
     rouge (4.5.1)
