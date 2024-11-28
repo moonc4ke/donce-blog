@@ -44,36 +44,3 @@
   color: var(--tokyo-cyan);
   text-decoration: underline;
 }
-
-.nav-menu__background {
-  position: absolute;
-  top: 195%;
-  right: 0;
-  transform: translateY(-50%);
-  height: 100px;
-  width: auto;
-  aspect-ratio: 1;
-  background-image: url("/beerus-pyjamas.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center right;
-  opacity: 0.5;
-  z-index: 1;
-}
-
-@media screen and (min-width: 481px) {
-  .nav-menu__background {
-    top: 145%;
-    height: 150px;
-  }
-}
-
-@media screen and (min-width: 769px) {
-  .nav-menu__background {
-    height: 160px;
-  }
-}
-
-.nav-menu--open .nav-menu__background {
-  visibility: hidden;
-}

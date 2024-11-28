@@ -1,9 +1,11 @@
 <div class="nav-menu" data-controller="menu" data-menu-target="menu">
   <div>
-    <button class="menu-button menu-button--primary" 
-            data-menu-target="button"
-            data-action="click->menu#toggle">
-            MENU
+    <button
+      class="menu-button menu-button--primary"
+      data-menu-target="button"
+      data-action="click->menu#toggle"
+    >
+      MENU
     </button>
 
     <%= link_to "donce.dev", root_path, class: "main-page-link" %>
@@ -13,10 +15,13 @@
     <%= link_to "Home", root_path, class: "nav-menu__link" %>
     <% if authenticated? %>
       <%= link_to "New blog post", new_blog_post_path, class: "nav-menu__link" %>
-      <%= link_to "Log out", session_path, method: :delete, 
-          data: { turbo_method: :delete }, 
-          class: "nav-menu__link" %>
+      <%= link_to "Log out",
+      session_path,
+      method: :delete,
+      data: {
+        turbo_method: :delete,
+      },
+      class: "nav-menu__link" %>
     <% end %>
   </div>
-  <div class="nav-menu__background"></div>
 </div>
