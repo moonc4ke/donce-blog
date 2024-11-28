@@ -48,10 +48,8 @@
   color: var(--tokyo-purple);
 }
 
-/* Names/Variables */
-.highlight .n,    /* Name */
+.highlight .ss,
 .highlight .na,   /* Name Attribute */
-.highlight .nb,   /* Name Builtin */
 .highlight .bp,   /* Name Builtin Pseudo */
 .highlight .nc,   /* Name Class */
 .highlight .no,   /* Name Constant */
@@ -106,8 +104,7 @@
 .highlight .si,   /* String Interpol */
 .highlight .sx,   /* String Other */
 .highlight .sr,   /* String Regex */
-.highlight .s1,   /* String Single */
-.highlight .ss {
+.highlight .s1 {
   /* String Symbol */
   color: var(--tokyo-green);
 }
@@ -138,6 +135,8 @@
 }
 
 /* Generic */
+.hightlight .n,
+.highlight .nb,
 .highlight .g,    /* Generic */
 .highlight .gd,   /* Generic Deleted */
 .highlight .ge,   /* Generic Emph */
