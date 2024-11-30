@@ -9,5 +9,6 @@
 #   end
 
 # 100.times do |i|
-#   BlogPost.create title: "Blog Post #{i}", short_body: "Short Body #{i}", body: "Main Body of Blog Post #{i}"
+#   blog_post = BlogPost.where(title: "Blog Post #{i}").first_or_initialize
+#   blog_post.update(short_body: "Short Body #{i}", body: "Main Body of Blog Post #{i}", published_at: Time.current)
 # end
