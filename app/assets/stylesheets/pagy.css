@@ -1,0 +1,77 @@
+.pagy {
+  display: flex;
+  justify-content: center;
+  font-size: var(--font-size-x-small);
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: var(--tokyo-text-primary);
+}
+
+.pagy a {
+  color: var(--tokyo-cyan);
+}
+
+.pagy .gap {
+  margin-top: 0.3rem;
+}
+
+.pagy > :not([hidden]) ~ :not([hidden]) {
+  --space-reverse: 0;
+  margin-right: calc(0.7rem * var(--space-reverse));
+  margin-left: calc(0.7rem * calc(1 - var(--space-reverse)));
+}
+
+.pagy a:not(.gap) {
+  display: block;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  color: var(--tokyo-cyan);
+  border: 1px solid var(--tokyo-cyan);
+}
+
+.pagy a:not(.gap):not([aria-disabled]):hover {
+  background-color: var(--tokyo-cyan);
+  color: var(--tokyo-bg-primary);
+}
+
+.pagy a:not(.gap):not([href]) {
+  /* disabled links */
+  cursor: default;
+  color: var(--tokyo-text-secondary);
+  border-color: var(--tokyo-text-secondary);
+}
+
+.pagy a:not(.gap):not([href]):hover {
+  /* disabled links */
+}
+
+.pagy a:not(.gap).current {
+  background-color: var(--tokyo-cyan);
+  color: var(--tokyo-bg-primary);
+  border-color: var(--tokyo-cyan);
+}
+
+.pagy label {
+  white-space: nowrap;
+  display: inline-block;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  color: var(--tokyo-text-bright);
+  border: 1px solid var(--tokyo-text-secondary);
+}
+
+.pagy label input {
+  line-height: 1.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--tokyo-text-secondary);
+  color: var(--tokyo-text-primary);
+  padding: 0.25rem 0.5rem;
+}
+
+.pagy label input:focus {
+  outline: none;
+  border-color: var(--tokyo-cyan);
+  box-shadow: 0 0 0 2px rgba(187, 154, 247, 0.2);
+}

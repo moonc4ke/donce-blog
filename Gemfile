@@ -67,3 +67,5 @@ end
 gem "redcarpet"
 gem "rouge"
 gem "active_storage_validations"
+
+gem "pagy", "~> 9.3"
