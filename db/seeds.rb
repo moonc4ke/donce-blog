@@ -7,3 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# 100.times do |i|
+#   BlogPost.create title: "Blog Post #{i}", short_body: "Short Body #{i}", body: "Main Body of Blog Post #{i}"
+# end
