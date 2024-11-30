@@ -54,7 +54,7 @@ a:hover {
 
 .underlined-link:after {
   border-bottom-width: 0.4em;
-  border-color: var(--tokyo-cyan);
+  border-color: currentColor;
   border-style: solid;
   content: "";
   display: block;
@@ -67,7 +67,7 @@ a:hover {
 }
 
 .nav-menu__link--active:after {
-  opacity: 0.1;
+  opacity: 0.15;
 }
 
 input,
