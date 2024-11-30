@@ -8,19 +8,20 @@
       MENU
     </button>
 
-    <%= link_to "donce.dev", root_path, class: "main-page-link" %>
+    <%= link_to "donce.dev", root_path, class: "main-page-link underlined-link" %>
   </div>
 
   <div class="nav-menu__links" data-menu-target="links">
     <%= link_to "Home",
     root_path,
     class:
-      "nav-menu__link #{current_page?(root_path) ? "nav-menu__link--active" : ""}" %>
+      "nav-menu__link underlined-link #{current_page?(root_path) ? "nav-menu__link--active" : ""}" %>
+
     <% if authenticated? %>
       <%= link_to "New blog post",
       new_blog_post_path,
       class:
-        "nav-menu__link #{current_page?(new_blog_post_path) ? "nav-menu__link--active" : ""}" %>
+        "nav-menu__link underlined-link #{current_page?(new_blog_post_path) ? "nav-menu__link--active" : ""}" %>
 
       <%= link_to "Log out",
       session_path,
@@ -28,7 +29,7 @@
       data: {
         turbo_method: :delete,
       },
-      class: "nav-menu__link" %>
+      class: "nav-menu__link underlined-link" %>
     <% end %>
   </div>
 </div>

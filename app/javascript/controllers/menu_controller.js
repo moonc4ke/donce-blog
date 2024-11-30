@@ -16,7 +16,7 @@ export default class extends Controller {
   }
 
   openMenu() {
-    this.buttonTarget.textContent = "CLOSE"
+    this.buttonTarget.textContent = "ESC"
     this.menuTarget.classList.add("nav-menu--open")
     this.linksTarget.classList.add("nav-menu__links--open")
     document.body.style.overflow = "hidden"

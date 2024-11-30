@@ -44,12 +44,30 @@ p {
 a {
   color: var(--tokyo-blue);
   text-decoration: none;
-  transition: color 0.2s ease;
+  display: inline-block;
 }
 
 a:hover {
   color: var(--tokyo-cyan);
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+.underlined-link:after {
+  border-bottom-width: 0.4em;
+  border-color: var(--tokyo-cyan);
+  border-style: solid;
+  content: "";
+  display: block;
+  margin: -0.6em -0.25em;
+  opacity: 0;
+}
+
+.underlined-link:hover:after {
+  opacity: 0.25;
+}
+
+.nav-menu__link--active:after {
+  opacity: 0.1;
 }
 
 input,
