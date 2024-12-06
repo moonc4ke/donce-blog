@@ -5,8 +5,12 @@ class BlogPostsController < ApplicationController
   allow_unauthenticated_access(only: [ :index, :show ])
   before_action :set_blog_post, only: [ :show, :edit, :update, :destroy, :delete_image ], if: -> { params[:id].present? }
 
+  rescue_from Pagy::OverflowError, with: :redirect_to_last_page
+
   def index
     @blog_posts = authenticated? ? BlogPost.sorted : BlogPost.published.sorted
+
+    @pagy, @blog_posts = pagy(@blog_posts)
   end
 
   def show
@@ -155,5 +159,9 @@ class BlogPostsController < ApplicationController
     @blog_post = authenticated? ? BlogPost.find(params[:id]) : BlogPost.published.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path
+  end
+
+  def redirect_to_last_page(exception)
+    redirect_to url_for(page: exception.pagy.last), notice: "Page ##{params[:page]} is overflowing. Showing page #{exception.pagy.last} instead."
   end
 end
