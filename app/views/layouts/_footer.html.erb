@@ -1,3 +1,65 @@
-<div>
-  Footer hahah
-</div>
+<footer class="footer">
+  <div class="footer__container">
+    <div class="footer__copyright">
+      <small class="footer__text">
+        ©
+        <%= Time.current.year %>
+        Donatas Adomavicius
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="footer__link">
+          CC BY-SA 4.0
+        </a>
+      </small>
+    </div>
+
+    <ul class="footer__social-list">
+      <li class="footer__social-item">
+        <a href="https://github.com/yourusername" class="footer__social-link" rel="me">
+          <%= image_tag "icons/github.svg", class: "footer__icon", alt: "github" %>
+          <span class="footer__social-text">GitHub</span>
+        </a>
+      </li>
+      <li class="footer__social-item">
+        <a
+          href="https://linkedin.com/in/yourusername"
+          class="footer__social-link"
+          rel="me"
+        >
+          <%= image_tag "icons/linkedin.svg", class: "footer__icon", alt: "linkedin" %>
+          <span class="footer__social-text">LinkedIn</span>
+        </a>
+      </li>
+      <li class="footer__social-item">
+        <a
+          href="https://instagram.com/yourusername"
+          class="footer__social-link"
+          rel="me"
+        >
+          <%= image_tag "icons/instagram.svg", class: "footer__icon", alt: "instagram" %>
+          <span class="footer__social-text">Instagram</span>
+        </a>
+      </li>
+      <li class="footer__social-item">
+        <a
+          href="https://youtube.com/@yourusername"
+          class="footer__social-link"
+          rel="me"
+        >
+          <%= image_tag "icons/youtube.svg", class: "footer__icon", alt: "youtube" %>
+          <span class="footer__social-text">YouTube</span>
+        </a>
+      </li>
+      <li class="footer__social-item">
+        <a href="https://x.com/yourusername" class="footer__social-link" rel="me">
+          <%= image_tag "icons/x-twitter.svg", class: "footer__icon", alt: "" %>
+          <span class="footer__social-text">X (Twitter)</span>
+        </a>
+      </li>
+      <li class="footer__social-item">
+        <a href="/rss.xml" class="footer__social-link" rel="me">
+          <%= image_tag "icons/rss.svg", class: "footer__icon", alt: "" %>
+          <span class="footer__social-text">RSS</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>
