@@ -31,7 +31,12 @@
     <main class="main">
       <div class="main__content">
         <%= render "layouts/navigation" %>
-        <%= yield %>
+
+        <div style="flex-grow: 1;">
+          <%= yield %>
+        </div>
+
+        <%= render "layouts/footer" %>
       </div>
     </main>
   </body>

@@ -32,11 +32,14 @@
 .main {
   max-width: 75rem;
   margin: 0 auto;
-  padding: var(--page-padding);
   font-size: var(--font-size-small);
 }
 
 .main__content {
   margin: 0 auto;
+  padding: var(--page-padding);
   max-width: 53rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
