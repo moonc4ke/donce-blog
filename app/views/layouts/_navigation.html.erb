@@ -17,6 +17,11 @@
     class:
       "nav-menu__link underlined-link #{current_page?(root_path) ? "nav-menu__link--active" : ""}" %>
 
+    <%= link_to "Projects",
+    projects_path,
+    class:
+      "nav-menu__link underlined-link #{current_page?(projects_path) ? "nav-menu__link--active" : ""}" %>
+
     <% if authenticated? %>
       <%= link_to "New blog post",
       new_blog_post_path,
