@@ -29,11 +29,12 @@
 
 .project-card {
   padding: 1.5rem;
-  border-radius: 8px;
   background-color: var(--tokyo-bg-tertiary);
   border: 1px solid var(--tokyo-text-secondary);
   transition: all 0.2s ease;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .project-card:hover {
@@ -52,6 +53,29 @@
   color: var(--tokyo-text-primary);
   margin-top: 0.5rem;
   font-size: var(--font-size-small);
+}
+
+.project-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  font-size: var(--font-size-xx-small);
+}
+
+.project-stats {
+  color: var(--tokyo-yellow);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.project-language {
+  color: var(--tokyo-cyan);
+  padding: 0.3rem 0.8rem;
+  background-color: var(--tokyo-bg-secondary);
+  border: 1px solid var(--tokyo-text-secondary);
 }
 
 @media screen and (max-width: 768px) {

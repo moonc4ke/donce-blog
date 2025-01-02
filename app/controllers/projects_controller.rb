@@ -6,8 +6,7 @@ class ProjectsController < ApplicationController
   GITHUB_USERNAME = "moonc4ke"
 
   def index
-    # check_rate_limit
-    @current_projects = fetch_pinned_repositories
+    @current_projects = fetch_current_focus_repositories
     @completed_projects = fetch_completed_repositories
     @config_projects = fetch_config_repositories
     @self_hosted_projects = fetch_self_hosted_repositories
@@ -18,21 +17,11 @@ class ProjectsController < ApplicationController
 
   private
 
-  def check_rate_limit
-    client = github_client
-    puts "Rate Limit: #{client.rate_limit.limit}"
-    puts "Remaining: #{client.rate_limit.remaining}"
-    puts "Resets at: #{client.rate_limit.resets_at}"
-  end
-
   def github_client
     @github_client ||= Octokit::Client.new(
       access_token: ENV["GITHUB_ACCESS_TOKEN"],
-      auto_paginate: true,
-      per_page: 100
+      auto_paginate: true
     ).tap do |client|
-      # Enable conditional requests to save on rate limits
-      client.auto_paginate = true
       client.default_media_type = "application/vnd.github.mercy-preview+json"
     end
   end
@@ -43,27 +32,26 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def fetch_pinned_repositories
-    # Fetch repositories marked as "current" using topics
+  def fetch_current_focus_repositories
     cached_repositories.select do |repo|
       repo.topics&.include?("current-focus")
     end
   end
 
   def fetch_completed_repositories
-    github_client.repositories(GITHUB_USERNAME).select do |repo|
+    cached_repositories.select do |repo|
       repo.topics&.include?("completed")
     end
   end
 
   def fetch_config_repositories
-    github_client.repositories(GITHUB_USERNAME).select do |repo|
+    cached_repositories.select do |repo|
       repo.topics&.include?("config")
     end
   end
 
   def fetch_self_hosted_repositories
-    github_client.repositories(GITHUB_USERNAME).select do |repo|
+    cached_repositories.select do |repo|
       repo.topics&.include?("self-hosted")
     end
   end

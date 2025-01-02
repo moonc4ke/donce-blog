@@ -17,12 +17,18 @@
             <p><%= project.description %></p>
             <div class="project-meta">
               <span class="project-stats">
-                ⭐
-                <%= project.stargazers_count %>
+                <% if project.stargazers_count && project.stargazers_count > 0 %>
+                  ⭐
+                  <%= project.stargazers_count %>
+                <% else %>
+                  No stars yet 🌱
+                <% end %>
               </span>
-              <span class="project-language">
-                <%= project.language %>
-              </span>
+              <% if project.language.present? %>
+                <span class="project-language">
+                  <%= project.language %>
+                </span>
+              <% end %>
             </div>
           </a>
         <% end %>
@@ -40,12 +46,18 @@
             <p><%= project.description %></p>
             <div class="project-meta">
               <span class="project-stats">
-                ⭐
-                <%= project.stargazers_count %>
+                <% if project.stargazers_count && project.stargazers_count > 0 %>
+                  ⭐
+                  <%= project.stargazers_count %>
+                <% else %>
+                  No stars yet 🌱
+                <% end %>
               </span>
-              <span class="project-language">
-                <%= project.language %>
-              </span>
+              <% if project.language.present? %>
+                <span class="project-language">
+                  <%= project.language %>
+                </span>
+              <% end %>
             </div>
           </a>
         <% end %>
@@ -63,12 +75,18 @@
             <p><%= project.description %></p>
             <div class="project-meta">
               <span class="project-stats">
-                ⭐
-                <%= project.stargazers_count %>
+                <% if project.stargazers_count && project.stargazers_count > 0 %>
+                  ⭐
+                  <%= project.stargazers_count %>
+                <% else %>
+                  No stars yet 🌱
+                <% end %>
               </span>
-              <span class="project-language">
-                <%= project.language %>
-              </span>
+              <% if project.language.present? %>
+                <span class="project-language">
+                  <%= project.language %>
+                </span>
+              <% end %>
             </div>
           </a>
         <% end %>
@@ -86,12 +104,18 @@
             <p><%= project.description %></p>
             <div class="project-meta">
               <span class="project-stats">
-                ⭐
-                <%= project.stargazers_count %>
+                <% if project.stargazers_count && project.stargazers_count > 0 %>
+                  ⭐
+                  <%= project.stargazers_count %>
+                <% else %>
+                  No stars yet 🌱
+                <% end %>
               </span>
-              <span class="project-language">
-                <%= project.language %>
-              </span>
+              <% if project.language.present? %>
+                <span class="project-language">
+                  <%= project.language %>
+                </span>
+              <% end %>
             </div>
           </a>
         <% end %>
