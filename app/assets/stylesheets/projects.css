@@ -11,13 +11,13 @@
 }
 
 .projects__section:first-of-type {
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .projects__section h2 {
   font-size: var(--font-size-x-large);
   margin-bottom: 2rem;
-  color: var(--tokyo-purple);
+  color: var(--tokyo-text-bright);
 }
 
 .projects__grid {
@@ -69,6 +69,10 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
+}
+
+.project-star-icon {
+  margin-right: 0.1rem;
 }
 
 .project-language {
