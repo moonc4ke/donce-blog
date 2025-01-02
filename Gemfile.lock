@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: f7ba6c43d67bb847b1d6297e17dc3d37e38ecb71
+  revision: be9aa73dd72f1097be5d45a58d7912447a266bd1
   branch: main
   specs:
     actioncable (8.1.0.alpha)
@@ -195,7 +195,7 @@ GEM
       zeitwerk (>= 2.6.18, < 3.0)
     language_server-protocol (3.17.0.3)
     logger (1.6.4)
-    loofah (2.23.1)
+    loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -212,7 +212,7 @@ GEM
     msgpack (1.7.3)
     net-http (0.6.0)
       uri
-    net-imap (0.5.2)
+    net-imap (0.5.4)
       date
       net-protocol
     net-pop (0.1.2)
@@ -227,24 +227,24 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.4)
-    nokogiri (1.18.0)
+    nokogiri (1.18.1)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.18.0-aarch64-linux-gnu)
+    nokogiri (1.18.1-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.0-aarch64-linux-musl)
+    nokogiri (1.18.1-aarch64-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.0-arm-linux-gnu)
+    nokogiri (1.18.1-arm-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.0-arm-linux-musl)
+    nokogiri (1.18.1-arm-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.0-arm64-darwin)
+    nokogiri (1.18.1-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.0-x86_64-darwin)
+    nokogiri (1.18.1-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.0-x86_64-linux-gnu)
+    nokogiri (1.18.1-x86_64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.0-x86_64-linux-musl)
+    nokogiri (1.18.1-x86_64-linux-musl)
       racc (~> 1.4)
     octokit (9.2.0)
       faraday (>= 1, < 3)
