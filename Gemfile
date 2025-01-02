@@ -67,5 +67,5 @@ end
 gem "redcarpet"
 gem "rouge"
 gem "active_storage_validations"
-
+gem "octokit", "~> 9.2"
 gem "pagy", "~> 9.3"
