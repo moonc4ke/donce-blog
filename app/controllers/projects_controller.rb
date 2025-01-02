@@ -1,5 +1,3 @@
-require "octokit"
-
 class ProjectsController < ApplicationController
   allow_unauthenticated_access(only: [ :index ])
 
