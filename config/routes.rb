@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   post "preview", to: "blog_posts#preview"
 
   get "projects", to: "projects#index"
+  get "blog", to: "blog_posts#index"
 
   # Defines the root path route ("/")
   root "blog_posts#index"
