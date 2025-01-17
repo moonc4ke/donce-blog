@@ -64,15 +64,13 @@
   background-color: var(--tokyo-bg-primary);
 }
 
+.project-card__title {
+  line-break: anywhere;
+}
+
 @media (min-width: 640px) {
   .project-card__content {
     padding: 1.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .project-card__content {
-    padding: 2rem;
   }
 }
 
