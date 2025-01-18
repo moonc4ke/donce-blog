@@ -24,6 +24,9 @@
       crossorigin="anonymous"
     >
 
+    <%# Preload specific CSS files %>
+    <link rel="preload" href="<%= asset_path('fonts.css') %>" as="style">
+
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
