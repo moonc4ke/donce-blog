@@ -33,6 +33,11 @@
     class:
       "nav-menu__link underlined-link #{current_page?(projects_path) ? "nav-menu__link--active" : ""}" %>
 
+    <%= link_to "Podcast",
+    podcast_path,
+    class:
+      "nav-menu__link underlined-link #{current_page?(podcast_path) ? "nav-menu__link--active" : ""}" %>
+
     <% if authenticated? %>
       <%= link_to "New blog post",
       new_blog_post_path,
