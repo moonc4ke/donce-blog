@@ -5,28 +5,34 @@
     <div class="podcast__grid">
       <% @episodes.each do |episode| %>
         <div class="podcast-card">
-          <div class="podcast-card__video-container">
-            <iframe
-              src="https://www.youtube.com/embed/<%= episode[:youtube_id] %>"
-              title="<%= episode[:title] %>"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-          <div class="podcast-card__content">
-            <h2 class="podcast-card__title"><%= episode[:title] %></h2>
-            <p class="podcast-card__description"><%= episode[:description] %></p>
-            <div class="podcast-card__date">
-              Published on
-              <%= Date.parse(episode[:published_at]).strftime("%B %d, %Y") %>
+          <span class="podcast-card__border-outline"></span>
+
+          <div class="podcast-card__content-wrapper">
+            <div class="podcast-card__content">
+              <div class="podcast-card__video-container">
+                <iframe
+                  src="https://www.youtube.com/embed/<%= episode[:youtube_id] %>"
+                  title="<%= episode[:title] %>"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div class="podcast-card__info">
+                <h2 class="podcast-card__title"><%= episode[:title] %></h2>
+                <p class="podcast-card__description"><%= episode[:description] %></p>
+                <div class="podcast-card__date">
+                  Published on
+                  <%= Date.parse(episode[:published_at]).strftime("%B %d, %Y") %>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       <% end %>
     </div>
   <% else %>
-    <div class="card">
+    <div class="podcast-no-episodes-card">
       <p>No episodes available at the moment.</p>
     </div>
   <% end %>
