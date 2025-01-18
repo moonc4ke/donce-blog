@@ -5,3 +5,10 @@ Rails.application.config.assets.version = "1.0"
 
 # Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
+
+# Explicitly precompile font files
+Rails.application.config.assets.precompile += %w[
+  InterVariable.woff2
+  InterVariable-Italic.woff2
+  fonts.css
+]
