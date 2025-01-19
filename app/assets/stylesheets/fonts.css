@@ -1,20 +1,35 @@
 @font-face {
-  font-family: "InterVariable";
+  font-family: "Inter";
   font-style: normal;
-  font-weight: 100 900;
-  font-display: block;
-  src: url("InterVariable.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  src: url("Inter-Regular.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: "InterVariable";
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("Inter-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
   font-style: italic;
-  font-weight: 100 900;
-  font-display: block;
-  src: url("InterVariable-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  src: url("Inter-Italic.woff2") format("woff2");
 }
 
 :root {
-  font-family: "InterVariable", sans-serif;
-  font-optical-sizing: auto;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
 }

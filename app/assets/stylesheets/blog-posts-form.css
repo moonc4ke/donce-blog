@@ -94,7 +94,7 @@
 
 .blog-post-form__error-summary {
   color: var(--tokyo-text-bright);
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: 0.5rem;
 }
 
