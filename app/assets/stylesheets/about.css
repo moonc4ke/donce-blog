@@ -15,6 +15,32 @@
   transform: scale(1.02);
 }
 
+.about__social-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.about__social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.about__social-link:hover {
+  color: #0066cc;
+}
+
+.about__icon {
+  width: 24px;
+  height: 24px;
+}
+
 @media (max-width: 768px) {
   .about__image-wrapper {
     max-width: 100%;
