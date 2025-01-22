@@ -32,7 +32,7 @@
     longer to load than expected :)</p>
 
   <section class="home__section">
-    <h2>Current Projects</h2>
+    <h2 class="home__heading">Current Projects</h2>
     <div class="projects__grid">
       <% @current_projects.each do |project| %>
         <%= render "projects/project_card", project: project %>
@@ -42,7 +42,7 @@
   </section>
 
   <section class="home__section">
-    <h2>Latest Posts</h2>
+    <h2 class="home__heading">Latest Posts</h2>
     <div class="blog-content">
       <% @recent_posts.each do |blog_post| %>
         <%= render "blog_posts/blog_card", blog_post: blog_post %>
@@ -52,13 +52,13 @@
   </section>
 
   <section class="home__section">
-    <h2>Podcast</h2>
+    <h2 class="home__heading">Podcast</h2>
     <p>Listen to my podcast about development, surfing, and life:</p>
     <%= link_to "Check out my podcast →", podcast_path, class: "home__view-all" %>
   </section>
 
   <section class="home__section home__contact">
-    <h2>Contact Me</h2>
+    <h2 class="home__heading">Contact Me</h2>
     <p>I'd love to connect on social media:</p>
 
     <ul class="about__social-list">
