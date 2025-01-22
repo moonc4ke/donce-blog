@@ -1,7 +1,6 @@
 class ProjectsController < ApplicationController
   allow_unauthenticated_access(only: [ :index ])
-
-  GITHUB_USERNAME = "moonc4ke"
+  include ProjectsHelper
 
   def index
     @current_projects = fetch_current_focus_repositories

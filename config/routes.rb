@@ -24,11 +24,12 @@ Rails.application.routes.draw do
 
   post "preview", to: "blog_posts#preview"
 
+  get "home", to: "home#index"
   get "blog", to: "blog_posts#index"
   get "projects", to: "projects#index"
   get "podcast", to: "podcast#index"
   get "about", to: "about#index"
 
   # Defines the root path route ("/")
-  root "blog_posts#index"
+  root "home#index"
 end

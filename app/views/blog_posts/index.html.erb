@@ -2,30 +2,7 @@
 
 <div class="blog-content">
   <% @blog_posts.each do |blog_post| %>
-    <div class="blog-card">
-      <%= link_to blog_post, class: "blog-card__link" do %>
-        <span class="blog-card__border-outline"></span>
-        <div class="blog-card__content-wrapper">
-          <div class="blog-card__content">
-            <h2 class="blog-card__title"><%= blog_post.title %></h2>
-
-            <% if blog_post.draft? %>
-              <div class="blog-post-status blog-post-status--draft">Draft</div>
-            <% elsif blog_post.scheduled? %>
-              <div class="blog-post-status blog-post-status--scheduled">Scheduled</div>
-            <% end %>
-
-            <p class="blog-card__date">
-              <%= blog_post.published_at&.strftime("%B %-d, %Y") || "Not published yet" %>
-            </p>
-
-            <p class="blog-card__description"><%= blog_post.short_body %></p>
-
-            <p class="blog-card__read-more">Read more</p>
-          </div>
-        </div>
-      <% end %>
-    </div>
+    <%= render "blog_card", blog_post: blog_post %>
   <% end %>
 </div>
 
