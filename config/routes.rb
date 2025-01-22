@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get "blog", to: "blog_posts#index"
   get "projects", to: "projects#index"
   get "podcast", to: "podcast#index"
+  get "about", to: "about#index"
 
   # Defines the root path route ("/")
   root "blog_posts#index"
