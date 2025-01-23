@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get "projects", to: "projects#index"
   get "podcast", to: "podcast#index"
   get "about", to: "about#index"
+  get "tools", to: "tools#index"
 
   # Defines the root path route ("/")
   root "home#index"

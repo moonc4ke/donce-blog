@@ -33,16 +33,6 @@
     longer to load than expected :)</p>
 
   <section class="home__section">
-    <h2 class="home__heading">Current Projects</h2>
-    <div class="projects__grid">
-      <% @current_projects.each do |project| %>
-        <%= render "projects/project_card", project: project %>
-      <% end %>
-    </div>
-    <%= link_to "View all projects →", projects_path, class: "home__view-all" %>
-  </section>
-
-  <section class="home__section">
     <h2 class="home__heading">Latest Posts</h2>
     <div class="blog-content">
       <% @recent_posts.each do |blog_post| %>
@@ -50,6 +40,16 @@
       <% end %>
     </div>
     <%= link_to "View all posts →", blog_posts_path, class: "home__view-all" %>
+  </section>
+
+  <section class="home__section">
+    <h2 class="home__heading">Current Projects</h2>
+    <div class="projects__grid">
+      <% @current_projects.each do |project| %>
+        <%= render "projects/project_card", project: project %>
+      <% end %>
+    </div>
+    <%= link_to "View all projects →", projects_path, class: "home__view-all" %>
   </section>
 
   <section class="home__section">
