@@ -149,6 +149,14 @@ class BlogPostsController < ApplicationController
     ), status: :unprocessable_entity
   end
 
+  def feed
+    @blog_posts = BlogPost.published.sorted
+
+    respond_to do |format|
+      format.rss { render layout: false }
+    end
+  end
+
   private
 
   def blog_post_params

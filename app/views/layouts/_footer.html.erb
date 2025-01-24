@@ -100,7 +100,11 @@
         </a>
       </li>
       <li class="footer__social-item">
-        <a href="/rss.xml" class="footer__social-link" rel="me">
+        <a
+          href="<%= feed_blog_posts_url(format: :rss) %>"
+          class="footer__social-link"
+          rel="me"
+        >
           <svg
             class="footer__icon"
             xmlns="http://www.w3.org/2000/svg"

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       post :save_draft
       delete "images/:image_id", to: "blog_posts#delete_image", as: :delete_temp_image
       post :attach_images  # For new blog posts
+      get :feed, defaults: { format: :rss }
     end
     member do
       delete "images/:image_id", to: "blog_posts#delete_image", as: :delete_image
