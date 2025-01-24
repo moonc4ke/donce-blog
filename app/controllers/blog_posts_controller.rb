@@ -2,7 +2,7 @@ class BlogPostsController < ApplicationController
   include MarkdownHelper
   include BlogPostImages
 
-  allow_unauthenticated_access(only: [ :index, :show ])
+  allow_unauthenticated_access(only: [ :index, :show, :feed ])
   before_action :set_blog_post, only: [ :show, :edit, :update, :destroy, :delete_image ], if: -> { params[:id].present? }
 
   rescue_from Pagy::OverflowError, with: :redirect_to_last_page
