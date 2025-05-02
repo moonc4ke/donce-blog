@@ -107,6 +107,9 @@
     <%= form.datetime_select :published_at,
                          include_blank: true,
                          class: "blog-post-form__select" %>
+    <button type="button" class="btn btn-sm mt-2" data-action="click->form-autosave#setCurrentTime">
+      Use Current Time
+    </button>
   </div>
 
   <%= form.submit blog_post.new_record? ? "Create Blog post" : "Update Blog post",
