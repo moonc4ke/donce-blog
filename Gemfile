@@ -69,6 +69,6 @@ end
 gem "redcarpet"
 gem "rouge"
 gem "active_storage_validations"
-gem "octokit", "~> 9.2"
+gem "octokit", "~> 10.0"
 gem "faraday-retry"
 gem "pagy", "~> 9.3"
