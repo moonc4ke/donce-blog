@@ -70,6 +70,8 @@
 .blog-post__body a {
   color: var(--tokyo-blue);
   text-decoration: none;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .blog-post__body a:hover {
