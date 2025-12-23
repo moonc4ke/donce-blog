@@ -5,7 +5,7 @@ class BlogPostsController < ApplicationController
   allow_unauthenticated_access(only: [ :index, :show, :feed ])
   before_action :set_blog_post, only: [ :show, :edit, :update, :destroy, :delete_image ], if: -> { params[:id].present? }
 
-  rescue_from Pagy::OverflowError, with: :redirect_to_last_page
+  rescue_from Pagy::RangeError, with: :redirect_to_last_page
 
   def index
     @blog_posts = authenticated? ? BlogPost.sorted : BlogPost.published.sorted

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Pagy initializer file (9.3.2)
+# Pagy initializer file (43.x)
 # Customize only what you really need and notice that the core Pagy works also without any of the following lines.
 # Should you just cherry pick part of this file, please maintain the require-order of the extras
 
@@ -122,14 +122,12 @@
 # See https://ddnexus.github.io/pagy/docs/extras/bulma
 # require 'pagy/extras/bulma'
 
-# Pagy extra: Add the pagy styled versions of the javascript-powered navs
-# and a few other components to the Pagy::Frontend module.
-# See https://ddnexus.github.io/pagy/docs/extras/pagy
-require "pagy/extras/pagy"
+# Pagy extra: Removed in Pagy 43.x - functionality is now in core
+# See https://ddnexus.github.io/pagy/docs/migration-guide
 
-# Multi size var used by the *_nav_js helpers
-# See https://ddnexus.github.io/pagy/docs/extras/pagy#steps
-Pagy::DEFAULT[:steps] = { 0 => 3, 540 => 7 }   # example
+# Number of page slots to show in navigation
+# See https://ddnexus.github.io/pagy/docs/api/options
+Pagy.options[:slots] = 7
 
 
 # Feature Extras
@@ -152,7 +150,7 @@ Pagy::DEFAULT[:steps] = { 0 => 3, 540 => 7 }   # example
 # Overflow extra: Allow for easy handling of overflowing pages
 # See https://ddnexus.github.io/pagy/docs/extras/overflow
 # require 'pagy/extras/overflow'
-Pagy::DEFAULT[:overflow] = :last_page
+Pagy.options[:overflow] = :last_page
 
 # Trim extra: Remove the page=1 param from links
 # See https://ddnexus.github.io/pagy/docs/extras/trim
@@ -178,7 +176,7 @@ Pagy::DEFAULT[:overflow] = :last_page
 
 # With the asset pipeline
 # Sprockets need to look into the pagy javascripts dir, so add it to the assets paths
-Rails.application.config.assets.paths << Pagy.root.join("javascripts")
+Rails.application.config.assets.paths << Pagy::ROOT.join("javascripts")
 
 # I18n
 
@@ -216,4 +214,4 @@ Rails.application.config.assets.paths << Pagy.root.join("javascripts")
 # require 'pagy/extras/i18n'
 
 # When you are done setting your own default freeze it, so it will not get changed accidentally
-Pagy::DEFAULT.freeze
+Pagy.options.freeze
