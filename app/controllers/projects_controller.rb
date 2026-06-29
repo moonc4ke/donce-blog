@@ -8,8 +8,10 @@ class ProjectsController < ApplicationController
     @config_projects = fetch_config_repositories
     @self_hosted_projects = fetch_self_hosted_repositories
   rescue Octokit::Error => e
-    Rails.logger.error "GitHub API Error: #{e.message}"
-    @error = "Unable to fetch projects at this time."
+    Rails.logger.warn "GitHub API unavailable for projects page: #{e.class}: #{e.message}"
+    @completed_projects = []
+    @config_projects = []
+    @self_hosted_projects = []
   end
 
   private

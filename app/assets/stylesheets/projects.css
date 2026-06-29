@@ -2,10 +2,6 @@
   margin-top: 1.5rem;
 }
 
-.projects__error-message {
-  margin-top: 1rem;
-}
-
 .projects__section {
   margin-top: 4rem;
 }
@@ -68,7 +64,9 @@
 }
 
 .project-card__title {
-  line-break: anywhere;
+  hyphens: none;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 @media (min-width: 640px) {

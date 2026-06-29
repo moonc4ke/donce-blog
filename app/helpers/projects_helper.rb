@@ -3,18 +3,32 @@ module ProjectsHelper
 
   GITHUB_USERNAME = "moonc4ke"
 
-  def github_client
-    @github_client ||= Octokit::Client.new(
-      access_token: ENV["GITHUB_ACCESS_TOKEN"],
-      auto_paginate: true
-    ).tap do |client|
-      client.default_media_type = "application/vnd.github.mercy-preview+json"
+  def github_client(access_token = ENV["GITHUB_ACCESS_TOKEN"])
+    @github_clients ||= {}
+    client_key = access_token.presence || :public
+
+    @github_clients[client_key] ||= begin
+      options = { auto_paginate: true }
+      options[:access_token] = access_token if access_token.present?
+
+      Octokit::Client.new(options).tap do |client|
+        client.default_media_type = "application/vnd.github.mercy-preview+json"
+      end
     end
+  end
+
+  def github_repositories
+    github_client.repositories(GITHUB_USERNAME)
+  rescue Octokit::Unauthorized => e
+    raise if ENV["GITHUB_ACCESS_TOKEN"].blank?
+
+    Rails.logger.warn "GitHub token rejected for projects page: #{e.message}. Retrying public GitHub API."
+    github_client(nil).repositories(GITHUB_USERNAME)
   end
 
   def cached_repositories
     Rails.cache.fetch("github_repos_#{GITHUB_USERNAME}", expires_in: 12.hours) do
-      github_client.repositories(GITHUB_USERNAME)
+      github_repositories
     end
   end
 
