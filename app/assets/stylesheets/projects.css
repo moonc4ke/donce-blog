@@ -37,7 +37,8 @@
   color: var(--tokyo-text-bright);
 }
 
-.project-card:hover {
+.project-card:hover,
+.featured-project-card:hover {
   text-decoration: none;
 }
 
@@ -51,7 +52,8 @@
 }
 
 @media (hover: hover) {
-  .project-card:hover .project-card__content-wrapper {
+  .project-card:hover .project-card__content-wrapper,
+  .featured-project-card:hover .project-card__content-wrapper {
     transform: translate(-0.5rem, -0.7rem);
   }
 }
@@ -139,6 +141,13 @@
   background-color: var(--tokyo-bg-secondary);
   border: 1px solid var(--tokyo-text-secondary);
   font-size: var(--font-size-xx-small);
+}
+
+.featured-project-card__link {
+  color: var(--tokyo-yellow);
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: var(--font-size-small);
 }
 
 @media screen and (max-width: 768px) {

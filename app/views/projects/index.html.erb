@@ -11,35 +11,10 @@
     <h2>Featured Work</h2>
     <div class="projects__grid">
       <% @featured_projects.each do |project| %>
-        <article class="featured-project-card">
-          <span class="project-card__border-outline"></span>
-
-          <div class="project-card__content-wrapper">
-            <div class="project-card__content">
-              <h3 class="project-card__title"><%= project[:title] %></h3>
-              <p><%= project[:summary] %></p>
-              <div class="featured-project-card__tags">
-                <% project[:tags].each do |tag| %>
-                  <span><%= tag %></span>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        </article>
+        <%= render "featured_project_card", project: project %>
       <% end %>
     </div>
   </section>
-
-  <% if @current_projects.present? %>
-    <section class="projects__section">
-      <h2>Current Focus</h2>
-      <div class="projects__grid">
-        <% @current_projects.each do |project| %>
-          <%= render "project_card", project: project %>
-        <% end %>
-      </div>
-    </section>
-  <% end %>
 
   <% if @completed_projects.present? %>
     <section class="projects__section">

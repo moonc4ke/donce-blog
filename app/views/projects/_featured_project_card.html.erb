@@ -1,0 +1,28 @@
+<% card_content = capture do %>
+  <span class="project-card__border-outline"></span>
+
+  <div class="project-card__content-wrapper">
+    <div class="project-card__content">
+      <h3 class="project-card__title"><%= project[:title] %></h3>
+      <p><%= project[:summary] %></p>
+      <div class="featured-project-card__tags">
+        <% project[:tags].each do |tag| %>
+          <span><%= tag %></span>
+        <% end %>
+      </div>
+      <% if project[:url].present? %>
+        <span class="featured-project-card__link">View JustBreezit</span>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<% if project[:url].present? %>
+  <%= link_to project[:url], class: "featured-project-card", target: "_blank", rel: "noopener" do %>
+    <%= card_content %>
+  <% end %>
+<% else %>
+  <article class="featured-project-card">
+    <%= card_content %>
+  </article>
+<% end %>
