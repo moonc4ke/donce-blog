@@ -21,6 +21,26 @@ Things you may want to cover:
 
 ## Deployment instructions
 
+Deploy secrets are read from the local gitignored `.env` file, matching the
+inventory-management and pm2-dashboard projects. Create it from the template
+before deploying:
+
+```sh
+cp .env.example .env
+$EDITOR .env
+```
+
+Required keys:
+
+- `KAMAL_REGISTRY_PASSWORD` - Docker Hub access token
+- `GITHUB_ACCESS_TOKEN` - GitHub token used to fetch public project metadata
+
+Normal deploy:
+
+```sh
+bin/kamal deploy
+```
+
 config/deploy.yml:
 
 ```
