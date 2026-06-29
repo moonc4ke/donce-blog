@@ -3,6 +3,7 @@ class ProjectsController < ApplicationController
   include ProjectsHelper
 
   def index
+    @featured_projects = featured_projects
     @current_projects = fetch_current_focus_repositories
     @completed_projects = fetch_completed_repositories
     @config_projects = fetch_config_repositories
@@ -51,5 +52,35 @@ class ProjectsController < ApplicationController
     cached_repositories.select do |repo|
       repo.topics&.include?("self-hosted")
     end
+  end
+
+  def featured_projects
+    [
+      {
+        title: "Breezit backend and platform work",
+        summary: "Backend services, vendor and admin platforms, v2 architecture, and AI customer communication systems across foxyBackend and FoxyVendor.",
+        tags: [ "foxyBackend", "FoxyVendor", "TypeScript", "MongoDB" ]
+      },
+      {
+        title: "PM2 Dashboard",
+        summary: "Rails ops dashboard for logs, deployments, health checks, database snapshots, recovery workflows, and large-log debugging.",
+        tags: [ "Rails", "PM2", "Kamal", "SQLite" ]
+      },
+      {
+        title: "Slack AI Analyzer",
+        summary: "Internal Slack bot that connects Codex, Claude Code, PM2 logs, read-only production analysis, screenshots, and follow-up context.",
+        tags: [ "Codex", "Claude Code", "Slack", "Bash" ]
+      },
+      {
+        title: "AI assisted development workflows",
+        summary: "Autopilot loops, roadmap orchestration, review loops, replay tooling, and synthetic replay tests for AI generated code.",
+        tags: [ "Autopilot Loops", "Synthetic Replay", "Reviews" ]
+      },
+      {
+        title: "Linux and self-hosting",
+        summary: "Arch Linux, Neovim, Docker, Kamal, Caddy, and home-server setups that keep the boring parts boring enough to trust.",
+        tags: [ "Arch Linux", "Neovim", "Docker", "Caddy" ]
+      }
+    ]
   end
 end
