@@ -86,6 +86,7 @@ export class Mooncake {
     this.y = window.innerHeight * 0.25
     this.dir = -1
     this.busy = false
+    this.erased = false
     this.asleepUntil = 0
     this.lastInputSnack = 0
     this.wanderTarget = null
@@ -145,7 +146,7 @@ export class Mooncake {
     const dt = Math.min(0.05, (t - this.lastT) / 1000)
     this.lastT = t
 
-    if (!this.busy && !this.reducedMotion && t > this.asleepUntil) this.wander(t, dt)
+    if (!this.busy && !this.erased && !this.reducedMotion && t > this.asleepUntil) this.wander(t, dt)
     if (this.moveGoal) this.stepToward(dt)
 
     const bob = this.reducedMotion ? 0 : Math.sin(t / 320) * 3
@@ -240,7 +241,7 @@ export class Mooncake {
   }
 
   get available() {
-    return !this.busy && !this.reducedMotion && performance.now() > this.asleepUntil
+    return !this.busy && !this.erased && !this.reducedMotion && performance.now() > this.asleepUntil
   }
 
   async chomp() {
@@ -280,7 +281,7 @@ export class Mooncake {
     const runLength = Math.floor(rand(6, 16))
     let eaten = 0
 
-    while (eaten < runLength && index < letters.length) {
+    while (eaten < runLength && index < letters.length && !this.erased) {
       const letter = letters[index++]
       if (!letter.node.isConnected) break
       const rect = letterRect(letter)
@@ -288,14 +289,14 @@ export class Mooncake {
 
       const point = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
       await this.flyTo(point, eaten === 0 ? 260 : 160)
-      if (!letter.node.isConnected) break
+      if (this.erased || !letter.node.isConnected) break
       replaceChar(letter)
       this.crumbs(point, 2)
       await this.chomp()
       eaten++
     }
 
-    if (eaten) this.say(pick(SNACK_LINES))
+    if (eaten && !this.erased) this.say(pick(SNACK_LINES))
     this.done()
   }
 
@@ -313,17 +314,17 @@ export class Mooncake {
       const point = this.hooks.inputPoint()
       if (!point) break
       await this.flyTo(point, i === 0 ? 300 : 120)
-      if (!this.hooks.eatInputChar()) break
+      if (this.erased || !this.hooks.eatInputChar()) break
       this.crumbs(point, 2)
       await this.chomp()
     }
 
-    this.say(pick([ "nom.", "typo removed :)", "you weren't using those", "crunchy." ]))
+    if (!this.erased) this.say(pick([ "nom.", "typo removed :)", "you weren't using those", "crunchy." ]))
     this.done()
   }
 
   async feed() {
-    if (this.busy) return false
+    if (this.busy || this.erased) return false
     this.busy = true
     this.asleepUntil = 0
 
@@ -341,6 +342,10 @@ export class Mooncake {
     await sleep(400)
     await this.flyTo(point, 280)
     food.remove()
+    if (this.erased) {
+      this.done()
+      return false
+    }
     this.crumbs(point, 6)
     await this.chomp()
     await this.chomp()
@@ -353,7 +358,7 @@ export class Mooncake {
   }
 
   async pet() {
-    if (this.busy) return
+    if (this.busy || this.erased) return
     this.busy = true
     this.setFrame("happy")
     this.hearts()
@@ -365,6 +370,44 @@ export class Mooncake {
   shoo() {
     this.asleepUntil = performance.now() + 60000
     this.say("zzz", 2400)
+  }
+
+  // Lord Beerus has spoken: turn to purple dust, come back a few seconds later.
+  async hakai() {
+    if (this.erased) return
+    this.erased = true
+    if (this.moveGoal) {
+      this.moveGoal.resolve()
+      this.moveGoal = null
+    }
+    this.dust()
+    this.el.classList.add("critter--erased")
+    await sleep(rand(4500, 6500))
+
+    const { size } = this.metrics
+    this.x = rand(24, Math.max(24, window.innerWidth - size - 24))
+    this.y = rand(60, Math.max(60, window.innerHeight * 0.45))
+    this.wanderTarget = null
+    this.el.classList.remove("critter--erased")
+    this.el.classList.add("critter--respawn")
+    setTimeout(() => this.el.classList.remove("critter--respawn"), 500)
+    this.erased = false
+    this.done()
+    this.say(pick([ "...pok?", "i'm back.", "rude.", "chookity?" ]))
+  }
+
+  dust() {
+    const { size } = this.metrics
+    for (let i = 0; i < 14; i++) {
+      const mote = document.createElement("div")
+      mote.className = "critter__dust"
+      mote.style.left = `${this.x + rand(size * 0.15, size * 0.85)}px`
+      mote.style.top = `${this.y + rand(size * 0.2, size * 0.9)}px`
+      mote.style.setProperty("--drift", `${rand(-24, 24)}px`)
+      mote.style.animationDelay = `${Math.floor(rand(0, 400))}ms`
+      this.layer.appendChild(mote)
+      setTimeout(() => mote.remove(), 1700)
+    }
   }
 }
 

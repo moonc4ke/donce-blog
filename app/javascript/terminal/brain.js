@@ -37,13 +37,14 @@ export const THINKING = [
 ]
 
 const FACTS = [
-  "* works out more than he codes. finally 100% true.",
-  "* always thinking about the next surf trip.",
-  "* office you say? *Please, NO!*",
-  "* started coding in 2008. still not a millionaire like DHH. maybe the agents will fix that.",
-  "* still reading One Piece.",
-  "* favorite anime: Mashle: Magic and Muscles. you know why.",
-  "* neovim is still his favorite editor. mostly for reading what the robots wrote."
+  "- works out more than he codes. finally 100% true.",
+  "- always thinking about the next surf trip.",
+  "- office you say? *Please, NO!*",
+  "- started coding in 2008. still not a millionaire like DHH. maybe the agents will fix that.",
+  "- still reading One Piece.",
+  "- favorite anime: Mashle: Magic and Muscles. you know why.",
+  "- neovim is still his favorite editor. mostly for reading what the robots wrote.",
+  "- there's a god of destruction napping in the corner. don't wake him."
 ]
 
 const ANSWERS = {
@@ -113,6 +114,10 @@ const INTENTS = [
   { re: /\b(labas|sveik|ačiū|aciu|kaip sekasi)/, answers: [ [ "labas! english works better here, the robots are lazy. try {help}." ] ] },
   { re: /^(hi|hello|hey|yo|sup|hola|ola|privet|gm)\b/, answers: [ [ "hey. ask me anything about Donce, or type {help}." ], [ "yo. the monster says hi too. it's hungry. try {whoami}." ] ] },
   { re: /\b(thanks|thank you|thx|ty|cool|nice|awesome|lol|lmao)\b/, answers: [ [ "anytime. the monster says nom." ], [ "glad to help. no tokens were harmed." ] ] },
+  { re: /\b(beerus|bills|god of destruction|cat|purple|sleeping|sleeps|napping|pyjamas?|pajamas?|whis|dragon ?ball)\b/, answers: [
+    [ "that's Lord Beerus, god of destruction. napping in the corner since the last deploy.", "whatever you do, do NOT type {hakai}." ],
+    [ "Lord Beerus. he sleeps for decades and destroys planets when he's hungry.", "he doesn't like the goblin. please don't {hakai}." ]
+  ] },
   { re: /\b(monster|creature|green|blob|goblin|that thing|mooncake|chookity|eat|eating|ate)\b/, answers: [
     [ "that's the snack goblin. it eats letters.", "it's not a bug, it's a roommate. try {feed}." ],
     [ "a small green pixel blob. legally distinct. very hungry.", "it eats your typing and old answers. try {feed} to distract it." ]
@@ -153,7 +158,7 @@ const FALLBACKS = [
 
 export const COMMANDS = [
   "help", "whoami", "work", "stack", "contact", "fun", "blog", "neofetch",
-  "feed", "pet", "shoo", "clear", "history", "date", "echo", "ls", "cat", "hire", "exit"
+  "feed", "pet", "shoo", "hakai", "clear", "history", "date", "echo", "ls", "cat", "hire", "exit"
 ]
 
 const CAT_FILES = {
@@ -190,8 +195,8 @@ export function respond(raw) {
       if (CAT_FILES[arg]) return respond(CAT_FILES[arg])
       if (arg.startsWith("secrets")) return { lines: [ "cat: secrets/: Permission denied (the monster is sitting on it)" ] }
       return { lines: [ `cat: ${arg || "???"}: No such file. try {ls}.` ] }
-    case "blog": case "clear": case "cls": case "history": case "feed": case "pet": case "shoo":
-      return { command: head === "cls" ? "clear" : head }
+    case "blog": case "clear": case "cls": case "history": case "feed": case "pet": case "shoo": case "hakai": case "wake":
+      return { command: { cls: "clear", wake: "hakai" }[head] ?? head }
   }
 
   for (const intent of INTENTS) {

@@ -116,7 +116,7 @@ body.term-body {
   z-index: 60;
   background:
     repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px),
-    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+    radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.38) 100%);
   animation: flicker 6s infinite steps(1);
 }
 
@@ -534,6 +534,145 @@ body.term-body {
 
   .term__chip {
     font-size: 18px;
+  }
+}
+
+/* ---------- Lord Beerus (do not wake) ---------- */
+
+.beerus {
+  position: absolute;
+  z-index: 2;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.beerus canvas {
+  display: block;
+  /* 54px sprite at 1.5x */
+  width: 81px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: brightness(1.12) drop-shadow(0 0 6px rgba(187, 154, 247, 0.35));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* default: napping on top of the input bar */
+.term__input-line > .beerus {
+  right: 12px;
+  bottom: calc(100% - 4px);
+}
+
+/* wide screens: in the page corner, on the grid floor */
+.term > .beerus {
+  left: 28px;
+  bottom: 18px;
+  font-size: 20px;
+}
+
+.term > .beerus canvas {
+  width: 162px;
+}
+
+.beerus__z {
+  position: absolute;
+  top: 18%;
+  font-family: var(--pixel);
+  color: var(--purple);
+  text-shadow: 0 0 8px rgba(187, 154, 247, 0.8);
+  pointer-events: none;
+  opacity: 0;
+  animation: snore 2.6s ease-out forwards;
+}
+
+@keyframes snore {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(26px, -54px) scale(1.2); }
+}
+
+.beerus__say {
+  position: absolute;
+  bottom: 92%;
+  padding: 4px 8px 3px;
+  font-family: var(--pixel);
+  font-size: 18px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--purple);
+  background: var(--bg-deep);
+  border: 2px solid var(--purple);
+  box-shadow: 3px 3px 0 rgba(187, 154, 247, 0.35);
+  pointer-events: none;
+  animation: bubble 2s ease-out forwards;
+}
+
+.term > .beerus .beerus__say {
+  left: 4px;
+  width: max-content;
+  max-width: 150px;
+  white-space: normal;
+}
+
+.term__input-line > .beerus .beerus__say { right: 10%; }
+
+.critter--erased canvas {
+  pointer-events: none;
+  animation: hakai 0.9s steps(6) forwards;
+}
+
+@keyframes hakai {
+  0% { filter: drop-shadow(0 0 6px var(--purple)) brightness(1.6) saturate(0.4); }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.8);
+    filter: drop-shadow(0 0 14px var(--purple)) brightness(2.2) saturate(0);
+  }
+}
+
+.critter--respawn canvas {
+  animation: respawn 0.45s steps(5);
+}
+
+@keyframes respawn {
+  from { opacity: 0; transform: scale(0.3); }
+}
+
+.critter__dust {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--purple);
+  box-shadow: 0 0 6px var(--purple);
+  opacity: 0;
+  animation: dust 1.2s ease-out forwards;
+}
+
+@keyframes dust {
+  0% { opacity: 1; transform: translate(0, 0); }
+  100% { opacity: 0; transform: translate(var(--drift), -56px); }
+}
+
+/* keep the last log lines clear of Beerus when he naps on the input bar */
+@media (max-width: 1279px) {
+  .term__log {
+    padding-bottom: 50px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1279px) {
+  .term__input-line > .beerus canvas {
+    width: 108px;
+  }
+
+  .term__log {
+    padding-bottom: 64px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .term > .beerus canvas {
+    width: 216px;
   }
 }
 

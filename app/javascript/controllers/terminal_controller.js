@@ -1,12 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 import { BANNER, BOOT, GREETING, COMMANDS, respond, thinkingLabel } from "terminal/brain"
 import { Mooncake } from "terminal/mooncake"
+import { Beerus } from "terminal/beerus"
 
 const SPINNER = [ "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" ]
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export default class extends Controller {
-  static targets = [ "log", "input", "typed", "caret", "clock", "critters" ]
+  static targets = [ "log", "input", "inputLine", "typed", "caret", "clock", "critters" ]
   static values = { posts: Array }
 
   connect() {
@@ -20,6 +21,16 @@ export default class extends Controller {
       inputPoint: () => this.inputPoint(),
       eatInputChar: () => this.eatInputChar()
     })
+
+    // Wide screens: Beerus naps in the page corner. Otherwise on top of the input bar.
+    this.beerus = new Beerus({ onHakai: () => this.monster.hakai() })
+    this.wideScreen = window.matchMedia("(min-width: 1280px)")
+    this.placeBeerus = () => {
+      const home = this.wideScreen.matches ? this.element : this.inputLineTarget
+      if (this.beerus.el.parentElement !== home) home.appendChild(this.beerus.el)
+    }
+    this.placeBeerus()
+    this.wideScreen.addEventListener("change", this.placeBeerus)
 
     this.updateClock()
     this.clockTimer = setInterval(() => this.updateClock(), 15000)
@@ -47,6 +58,8 @@ export default class extends Controller {
     window.visualViewport?.removeEventListener("resize", this.fitViewport)
     window.removeEventListener("resize", this.fitViewport)
     this.monster.destroy()
+    this.wideScreen.removeEventListener("change", this.placeBeerus)
+    this.beerus.destroy()
   }
 
   // ---- boot ----
@@ -180,14 +193,29 @@ export default class extends Controller {
         await this.printAnswer(this.history.map((h, i) => `${String(i + 1).padStart(3)}  ${h}`), { stream: false })
         return
       case "feed": {
+        if (this.monster.erased) {
+          await this.printAnswer([ "nothing to feed. Beerus erased it. give it a few seconds." ])
+          return
+        }
         const fed = this.monster.feed()
         await this.printAnswer([ "you toss a snack into the void. something green noticed." ])
         if (!(await fed)) await this.printAnswer([ "it's busy eating something else. patience." ])
         return
       }
       case "pet":
+        if (this.monster.erased) {
+          await this.printAnswer([ "there's nothing left to pet. Beerus saw to that." ])
+          return
+        }
         this.monster.pet()
         await this.printAnswer([ "it purrs in 8-bit." ])
+        return
+      case "hakai":
+        if (this.beerus.wake()) {
+          await this.printAnswer([ "you woke up Lord Beerus. bold move." ])
+        } else {
+          await this.printAnswer([ "he's already awake. and annoyed." ])
+        }
         return
       case "shoo":
         this.monster.shoo()

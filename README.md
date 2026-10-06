@@ -71,6 +71,7 @@ bin/rails db:seed
 - Home is a terminal chat: `app/views/terminal/index.html.erb`
 - Terminal answers and commands: `app/javascript/terminal/brain.js`
 - The letter-eating pixel monster: `app/javascript/terminal/mooncake.js`
+- Lord Beerus napping in the corner (click him, or type `hakai`): `app/javascript/terminal/beerus.js`
 - Terminal styles (separate from the blog styles): `app/assets/terminal/terminal.css`
 - Public profile copy: `docs/profile-copy.md`
 - Public wording glossary: `CONTEXT.md`
