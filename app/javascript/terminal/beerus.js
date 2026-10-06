@@ -1,11 +1,28 @@
 // Lord Beerus, god of destruction, napping in the corner in his pyjamas.
-// Hand-placed pixels. Do not wake him.
+// Hand-placed pixels. Do not wake him. Definitely not five times.
 
-const PALETTE = {
+export const PALETTE = {
   o: "#1b1226", P: "#a37ccb", p: "#c4a2e6", q: "#7b56a6", Q: "#5a3a82",
-  M: "#b3e4df", m: "#d8f6f1", n: "#80bfba",
-  Y: "#e8bd45", y: "#a57a1d", k: "#26142f", w: "#ffffff",
+  M: "#b3e4df", m: "#d8f6f1", n: "#80bfba", N: "#5b9b98",
+  Y: "#e8bd45", y: "#a57a1d", k: "#26142f", w: "#ffffff", r: "#e886b1", d: "#3b0d1e",
   b: "#bfefff", c: "rgba(191, 239, 255, 0.28)"
+}
+
+// Paints char rows onto a canvas. A space keeps the pixel underneath; a dot clears it,
+// unless skipEmpty is set, then dots are left alone too.
+export function paintRows(ctx, rows, ox, oy, skipEmpty = false) {
+  rows.forEach((row, y) => {
+    for (let x = 0; x < row.length; x++) {
+      const ch = row[x]
+      if (ch === " " || (skipEmpty && ch === ".")) continue
+      if (ch === ".") {
+        ctx.clearRect(ox + x, oy + y, 1, 1)
+        continue
+      }
+      ctx.fillStyle = PALETTE[ch]
+      ctx.fillRect(ox + x, oy + y, 1, 1)
+    }
+  })
 }
 
 const WIDTH = 54
@@ -97,6 +114,12 @@ const PATCHES = {
     " YYYk ",
     "kY Yko",
     "   P  "
+  ] },
+  furious: { x: 31, y: 15, rows: [
+    "    Q     Q     ",
+    "kYYY       YYYk ",
+    "kY Yk     kY Yko",
+    "             P  "
   ] }
 }
 
@@ -145,14 +168,21 @@ const POP = [
 const NOSE = { x: 39, y: 18 }
 
 const TICK = 340
-const GRUMBLES = [ "...hakai.", "who dares.", "hakai.", "five more minutes. hakai." ]
+const RAGE_AT = 5
+const GRUMBLES = [
+  [ "...hakai.", "who dares.", "five more minutes. hakai." ],
+  [ "I said five more minutes.", "again?!", "do you have a death wish?" ],
+  [ "I'm warning you, mortal.", "my patience is NOT infinite." ],
+  [ "one more time and this website is GONE.", "last warning." ]
+]
 
 const rand = (min, max) => min + Math.random() * (max - min)
 const pick = (list) => list[Math.floor(Math.random() * list.length)]
 
 export class Beerus {
-  constructor({ onHakai }) {
+  constructor({ onHakai, onRage }) {
     this.onHakai = onHakai
+    this.onRage = onRage
     this.reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     this.el = document.createElement("div")
@@ -168,9 +198,10 @@ export class Beerus {
       this.wake()
     })
 
-    this.state = { inhale: false, tail: 0, twitch: false, awake: false, bubble: 1 }
+    this.state = { inhale: false, tail: 0, twitch: false, awake: false, furious: false, bubble: 1 }
     this.phase = 0
     this.bubbleOff = false
+    this.anger = 0
     this.timers = new Set()
 
     this.draw()
@@ -183,6 +214,7 @@ export class Beerus {
 
   destroy() {
     this.timers.forEach((id) => { clearTimeout(id); clearInterval(id) })
+    this.timers.clear()
     this.el.remove()
   }
 
@@ -196,40 +228,32 @@ export class Beerus {
       fn()
     }, ms)
     this.timers.add(id)
+    return id
+  }
+
+  cancel(id) {
+    clearTimeout(id)
+    this.timers.delete(id)
   }
 
   // ---- rendering ----
 
   draw() {
-    const { inhale, tail, twitch, awake, bubble } = this.state
+    const { inhale, tail, twitch, awake, furious, bubble } = this.state
     this.ctx.clearRect(0, 0, WIDTH, HEIGHT)
-    this.paint(BASE, 0, 0, true)
+    paintRows(this.ctx, BASE, 0, 0, true)
     if (inhale) this.paintPatch(PATCHES.inhale)
     if (tail < 0) this.paintPatch(PATCHES.tailLeft)
     if (tail > 0) this.paintPatch(PATCHES.tailRight)
     if (twitch) this.paintPatch(PATCHES.twitch)
     if (awake) this.paintPatch(PATCHES.awake)
-    if (bubble === "pop") this.paint(POP, NOSE.x, NOSE.y, true)
-    else if (bubble > 0) this.paint(BUBBLES[bubble - 1], NOSE.x, NOSE.y, true)
+    if (furious) this.paintPatch(PATCHES.furious)
+    if (bubble === "pop") paintRows(this.ctx, POP, NOSE.x, NOSE.y, true)
+    else if (bubble > 0) paintRows(this.ctx, BUBBLES[bubble - 1], NOSE.x, NOSE.y, true)
   }
 
   paintPatch({ x, y, rows }) {
-    this.paint(rows, x, y)
-  }
-
-  paint(rows, ox, oy, skipEmpty = false) {
-    rows.forEach((row, y) => {
-      for (let x = 0; x < row.length; x++) {
-        const ch = row[x]
-        if (ch === " " || (skipEmpty && ch === ".")) continue
-        if (ch === ".") {
-          this.ctx.clearRect(ox + x, oy + y, 1, 1)
-          continue
-        }
-        this.ctx.fillStyle = PALETTE[ch]
-        this.ctx.fillRect(ox + x, oy + y, 1, 1)
-      }
-    })
+    paintRows(this.ctx, rows, x, y)
   }
 
   // ---- sleeping ----
@@ -288,27 +312,60 @@ export class Beerus {
 
   // ---- do not wake ----
 
+  // Every wake makes him angrier. The fifth one erases the website.
+  // Returns the anger level so callers can react to it.
   wake() {
-    if (this.state.awake) return false
+    if (this.raging) return this.anger
+    this.anger++
+    if (this.anger >= RAGE_AT) {
+      this.rage()
+      return this.anger
+    }
 
-    this.state = { inhale: false, tail: 0, twitch: false, awake: true, bubble: this.state.bubble ? "pop" : 0 }
+    const wasAwake = this.state.awake
+    this.state = {
+      inhale: false, tail: 0, twitch: false, awake: true,
+      furious: this.anger > 1,
+      bubble: !wasAwake && this.state.bubble ? "pop" : 0
+    }
+    this.el.classList.toggle("beerus--annoyed", this.anger >= 3)
     this.draw()
-    this.say(pick(GRUMBLES))
+    this.say(pick(GRUMBLES[this.anger - 1]))
     this.later(500, () => this.onHakai?.())
-    this.later(180, () => {
-      this.state.bubble = 0
-      this.draw()
-    })
-    this.later(2200, () => {
-      this.state.awake = false
-      this.bubbleOff = true
-      this.draw()
-      this.snore()
-    })
-    return true
+    if (!wasAwake) {
+      this.later(180, () => {
+        this.state.bubble = 0
+        this.draw()
+      })
+    }
+
+    this.cancel(this.sleepTimer)
+    this.sleepTimer = this.later(2000 + this.anger * 500, () => this.fallAsleep())
+    return this.anger
+  }
+
+  fallAsleep() {
+    this.state.awake = false
+    this.state.furious = false
+    this.bubbleOff = true
+    this.el.classList.remove("beerus--annoyed")
+    this.draw()
+    this.snore()
+  }
+
+  rage() {
+    this.raging = true
+    this.timers.forEach((id) => { clearTimeout(id); clearInterval(id) })
+    this.timers.clear()
+    this.state = { inhale: false, tail: 0, twitch: false, awake: true, furious: true, bubble: 0 }
+    this.el.classList.add("beerus--annoyed")
+    this.draw()
+    this.say("HAKAI!!")
+    this.onRage?.(this.el.getBoundingClientRect())
   }
 
   say(text) {
+    this.el.querySelectorAll(".beerus__say").forEach((old) => old.remove())
     const bubble = document.createElement("div")
     bubble.className = "beerus__say"
     bubble.textContent = text

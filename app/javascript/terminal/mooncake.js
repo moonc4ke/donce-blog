@@ -373,7 +373,9 @@ export class Mooncake {
   }
 
   // Lord Beerus has spoken: turn to purple dust, come back a few seconds later.
-  async hakai() {
+  // A permanent hakai (the site got erased) means no coming back until a refresh.
+  async hakai({ permanent = false } = {}) {
+    if (permanent) this.gone = true
     if (this.erased) return
     this.erased = true
     if (this.moveGoal) {
@@ -383,6 +385,7 @@ export class Mooncake {
     this.dust()
     this.el.classList.add("critter--erased")
     await sleep(rand(4500, 6500))
+    if (this.gone) return
 
     const { size } = this.metrics
     this.x = rand(24, Math.max(24, window.innerWidth - size - 24))

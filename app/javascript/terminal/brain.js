@@ -115,8 +115,8 @@ const INTENTS = [
   { re: /^(hi|hello|hey|yo|sup|hola|ola|privet|gm)\b/, answers: [ [ "hey. ask me anything about Donce, or type {help}." ], [ "yo. the monster says hi too. it's hungry. try {whoami}." ] ] },
   { re: /\b(thanks|thank you|thx|ty|cool|nice|awesome|lol|lmao)\b/, answers: [ [ "anytime. the monster says nom." ], [ "glad to help. no tokens were harmed." ] ] },
   { re: /\b(beerus|bills|god of destruction|cat|purple|sleeping|sleeps|napping|pyjamas?|pajamas?|whis|dragon ?ball)\b/, answers: [
-    [ "that's Lord Beerus, god of destruction. napping in the corner since the last deploy.", "whatever you do, do NOT type {hakai}." ],
-    [ "Lord Beerus. he sleeps for decades and destroys planets when he's hungry.", "he doesn't like the goblin. please don't {hakai}." ]
+    [ "that's Lord Beerus, god of destruction. napping in the corner since the last deploy.", "whatever you do, do NOT type {hakai}. and definitely not five times." ],
+    [ "Lord Beerus. he sleeps for decades and destroys planets when he's hungry.", "wake him five times and he erases this whole website. please don't {hakai}." ]
   ] },
   { re: /\b(monster|creature|green|blob|goblin|that thing|mooncake|chookity|eat|eating|ate)\b/, answers: [
     [ "that's the snack goblin. it eats letters.", "it's not a bug, it's a roommate. try {feed}." ],

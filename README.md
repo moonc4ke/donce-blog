@@ -72,6 +72,7 @@ bin/rails db:seed
 - Terminal answers and commands: `app/javascript/terminal/brain.js`
 - The letter-eating pixel monster: `app/javascript/terminal/mooncake.js`
 - Lord Beerus napping in the corner (click him, or type `hakai`): `app/javascript/terminal/beerus.js`
+- What happens after the fifth wake (site erased, angry floating Beerus, refresh to restore): `app/javascript/terminal/hakai.js`
 - Terminal styles (separate from the blog styles): `app/assets/terminal/terminal.css`
 - Public profile copy: `docs/profile-copy.md`
 - Public wording glossary: `CONTEXT.md`

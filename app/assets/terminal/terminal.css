@@ -676,12 +676,208 @@ body.term-body {
   }
 }
 
+/* ---------- hakai: what happens after the fifth wake ---------- */
+
+.beerus--annoyed canvas {
+  filter: brightness(1.12) drop-shadow(0 0 8px rgba(255, 0, 124, 0.7));
+  animation: annoyed 0.24s steps(2) infinite;
+}
+
+@keyframes annoyed {
+  50% { transform: translateX(1px); }
+}
+
+.angry-beerus {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  transform-origin: center;
+}
+
+.angry-beerus canvas {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(187, 154, 247, 0.9)) drop-shadow(0 0 22px rgba(255, 0, 124, 0.45));
+  animation: rage-aura 1.2s ease-in-out infinite;
+}
+
+@keyframes rage-aura {
+  50% { filter: drop-shadow(0 0 12px rgba(187, 154, 247, 1)) drop-shadow(0 0 32px rgba(255, 0, 124, 0.65)); }
+}
+
+.angry-beerus--rise canvas {
+  animation: rage-rise 0.6s steps(6), rage-aura 1.2s ease-in-out 0.6s infinite;
+}
+
+@keyframes rage-rise {
+  from { transform: scale(0.4); filter: brightness(3) drop-shadow(0 0 30px var(--purple)); }
+}
+
+.angry-beerus__say {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  padding: 4px 9px 3px;
+  font-family: var(--pixel);
+  font-size: 20px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--bg-deep);
+  background: var(--purple);
+  border: 2px solid var(--fg-bright);
+  box-shadow: 3px 3px 0 rgba(255, 0, 124, 0.6);
+  pointer-events: none;
+  animation: bubble 2s ease-out forwards;
+}
+
+.hakai-mote {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+  pointer-events: none;
+  animation: hakai-mote 1.4s ease-out forwards;
+}
+
+@keyframes hakai-mote {
+  0% { opacity: 1; transform: translate(0, 0); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)); }
+}
+
+.hakai-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 55%, rgba(187, 154, 247, 0.55), rgba(255, 0, 124, 0.25) 45%, transparent 75%);
+  opacity: 0;
+  animation: hakai-flash 1.3s ease-out forwards;
+}
+
+@keyframes hakai-flash {
+  10% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.hakai-shake {
+  animation: hakai-shake 0.12s steps(2) 5;
+}
+
+@keyframes hakai-shake {
+  0% { transform: translate(3px, -2px); }
+  50% { transform: translate(-3px, 2px); }
+}
+
+.term__window.hakai-aura {
+  border-color: var(--purple);
+  box-shadow:
+    0 0 0 2px var(--purple),
+    0 0 40px rgba(187, 154, 247, 0.8),
+    0 0 120px rgba(255, 0, 124, 0.35);
+  transition: box-shadow 0.4s, border-color 0.4s;
+}
+
+.hakai-crumble {
+  animation: hakai-crumble 0.8s ease-in forwards !important;
+}
+
+@keyframes hakai-crumble {
+  25% {
+    opacity: 1;
+    color: #f3eaff;
+    text-shadow: 0 0 8px var(--purple), 0 0 18px var(--purple);
+    filter: brightness(1.5);
+  }
+  100% { opacity: 0; transform: translateY(-8px); filter: blur(4px) brightness(2); }
+}
+
+.hakai-fade {
+  border-color: transparent !important;
+  background: transparent !important;
+  transition: border-color 1.2s, background 1.2s;
+}
+
+.term__window.hakai-gone {
+  animation: hakai-gone 0.9s ease-in forwards;
+}
+
+@keyframes hakai-gone {
+  to { opacity: 0; transform: scale(0.97); filter: blur(6px) brightness(1.6); }
+}
+
+.term--erased .term__grid,
+.term--erased .term__kana {
+  animation: hakai-fade-out 1.2s ease-in forwards;
+}
+
+@keyframes hakai-fade-out {
+  to { opacity: 0; filter: blur(4px); }
+}
+
+/* sits above the critters so the refresh button can never be covered */
+.term__void {
+  position: absolute;
+  inset: 0;
+  z-index: 52;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  font-family: var(--pixel);
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--comment);
+  animation: void-in 1.2s ease-out both;
+}
+
+.term__void p {
+  margin: 0;
+}
+
+.term__void p:first-child {
+  color: var(--fg);
+}
+
+.term__void-button {
+  font: inherit;
+  color: var(--purple);
+  background: rgba(187, 154, 247, 0.08);
+  border: 1px solid rgba(187, 154, 247, 0.5);
+  padding: 2px 10px;
+  cursor: pointer;
+  touch-action: manipulation;
+  pointer-events: auto;
+}
+
+.term__void-button:hover,
+.term__void-button:focus-visible {
+  color: var(--bg-deep);
+  background: var(--purple);
+  outline: none;
+}
+
+@keyframes void-in {
+  from { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .term__grid,
   .term__fx,
   .term__banner,
   .term__led,
-  .term__caret {
+  .term__caret,
+  .beerus--annoyed canvas,
+  .angry-beerus canvas,
+  .hakai-shake {
     animation: none;
   }
 }

@@ -2,12 +2,20 @@ import { Controller } from "@hotwired/stimulus"
 import { BANNER, BOOT, GREETING, COMMANDS, respond, thinkingLabel } from "terminal/brain"
 import { Mooncake } from "terminal/mooncake"
 import { Beerus } from "terminal/beerus"
+import { AngryBeerus, hakaiSite } from "terminal/hakai"
 
+const HAKAI_REPLIES = [
+  "you woke up Lord Beerus. bold move.",
+  "he's getting annoyed.",
+  "he's REALLY annoyed now.",
+  "one more and he erases everything. just saying.",
+  "oh no."
+]
 const SPINNER = [ "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" ]
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export default class extends Controller {
-  static targets = [ "log", "input", "inputLine", "typed", "caret", "clock", "critters" ]
+  static targets = [ "window", "log", "input", "inputLine", "typed", "caret", "clock", "critters" ]
   static values = { posts: Array }
 
   connect() {
@@ -23,7 +31,10 @@ export default class extends Controller {
     })
 
     // Wide screens: Beerus naps in the page corner. Otherwise on top of the input bar.
-    this.beerus = new Beerus({ onHakai: () => this.monster.hakai() })
+    this.beerus = new Beerus({
+      onHakai: () => this.monster.hakai(),
+      onRage: (from) => this.rage(from)
+    })
     this.wideScreen = window.matchMedia("(min-width: 1280px)")
     this.placeBeerus = () => {
       const home = this.wideScreen.matches ? this.element : this.inputLineTarget
@@ -60,6 +71,7 @@ export default class extends Controller {
     this.monster.destroy()
     this.wideScreen.removeEventListener("change", this.placeBeerus)
     this.beerus.destroy()
+    this.angryBeerus?.destroy()
   }
 
   // ---- boot ----
@@ -145,6 +157,7 @@ export default class extends Controller {
   }
 
   submit(value) {
+    if (this.destroyed) return
     const text = value.trim()
     this.setInput("")
     if (!text) {
@@ -210,13 +223,11 @@ export default class extends Controller {
         this.monster.pet()
         await this.printAnswer([ "it purrs in 8-bit." ])
         return
-      case "hakai":
-        if (this.beerus.wake()) {
-          await this.printAnswer([ "you woke up Lord Beerus. bold move." ])
-        } else {
-          await this.printAnswer([ "he's already awake. and annoyed." ])
-        }
+      case "hakai": {
+        const anger = this.beerus.wake()
+        await this.printAnswer([ HAKAI_REPLIES[Math.min(anger, HAKAI_REPLIES.length) - 1] ])
         return
+      }
       case "shoo":
         this.monster.shoo()
         await this.printAnswer([ "the goblin takes a 60s nap. your letters are safe. for now." ])
@@ -230,6 +241,25 @@ export default class extends Controller {
         this.monster.scheduleSnack(answer)
       }
     }
+  }
+
+  // Fifth wake: Beerus erases the site. Only a refresh brings it back.
+  async rage(from) {
+    if (this.destroyed) return
+    this.destroyed = true
+    this.queue = []
+    this.fastForward = true
+    this.inputTarget.blur()
+    this.inputTarget.disabled = true
+    document.removeEventListener("keydown", this.focusOnKey)
+    this.wideScreen.removeEventListener("change", this.placeBeerus)
+    this.monster.hakai({ permanent: true })
+
+    await sleep(700)
+    this.beerus.destroy()
+    this.angryBeerus = new AngryBeerus(this.crittersTarget, from)
+    await hakaiSite({ root: this.element, target: this.windowTarget, layer: this.crittersTarget })
+    this.angryBeerus.roam()
   }
 
   // ---- output ----
