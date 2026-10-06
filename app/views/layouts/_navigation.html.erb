@@ -18,7 +18,7 @@
   </div>
 
   <div class="nav-menu__links" data-menu-target="links">
-    <%= link_to "Home",
+    <%= link_to "Terminal",
     root_path,
     class:
       "nav-menu__link underlined-link #{current_page?(root_path) ? "nav-menu__link--active" : ""}" %>
@@ -28,25 +28,9 @@
     class:
       "nav-menu__link underlined-link #{current_page?(blog_posts_path) ? "nav-menu__link--active" : ""}" %>
 
-    <%= link_to "Projects",
-    projects_path,
-    class:
-      "nav-menu__link underlined-link #{current_page?(projects_path) ? "nav-menu__link--active" : ""}" %>
 
-    <%= link_to "Podcast",
-    podcast_path,
-    class:
-      "nav-menu__link underlined-link #{current_page?(podcast_path) ? "nav-menu__link--active" : ""}" %>
 
-    <%= link_to "About",
-    about_path,
-    class:
-      "nav-menu__link underlined-link #{current_page?(about_path) ? "nav-menu__link--active" : ""}" %>
 
-    <%= link_to "Tools",
-    tools_path,
-    class:
-      "nav-menu__link underlined-link #{current_page?(tools_path) ? "nav-menu__link--active" : ""}" %>
 
     <% if authenticated? %>
       <%= link_to "New blog post",

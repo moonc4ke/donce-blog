@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>donce.dev // agentic engineer</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Donatas Adomavicius, aka Donce. Agentic engineer. Ask the terminal, mind the monster.">
+    <meta name="theme-color" content="#0b0c14">
+    <meta property="og:title" content="donce.dev">
+    <meta property="og:description" content="Agentic engineer. I describe the software, robots type it.">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <%= stylesheet_link_tag "terminal" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="term-body" data-turbo="false">
+    <%= yield %>
+  </body>
+</html>

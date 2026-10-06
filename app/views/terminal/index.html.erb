@@ -1,0 +1,40 @@
+<div class="term" data-controller="terminal" data-terminal-posts-value="<%= @posts.to_json %>">
+  <div class="term__bg" aria-hidden="true">
+    <div class="term__grid"></div>
+    <div class="term__kana term__kana--left">ドンセ・エージェント・エンジニア</div>
+    <div class="term__kana term__kana--right">ロボットがコードを書く・ノム</div>
+  </div>
+
+  <section class="term__window" aria-label="donce.dev terminal">
+    <header class="term__bar">
+      <span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="term__title">guest@donce.dev: ~</span>
+      <span class="term__status">
+        <span class="term__led" aria-hidden="true"></span>
+        <span class="term__status-text">uplink stable</span>
+        <span data-terminal-target="clock">--:--</span> VNO
+      </span>
+    </header>
+
+    <div class="term__log" data-terminal-target="log" role="log" aria-live="polite"></div>
+
+    <div class="term__input-line" data-action="click->terminal#focus">
+      <span class="term__prompt"><span class="term__host">guest@donce.dev:</span>~$</span>
+      <span class="term__typed" data-terminal-target="typed"></span><span class="term__caret" data-terminal-target="caret"></span>
+      <input class="term__input"
+             data-terminal-target="input"
+             data-action="input->terminal#onInput keydown->terminal#onKey"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+             enterkeyhint="send" aria-label="Ask something about Donce">
+    </div>
+
+    <nav class="term__chips" aria-label="Quick commands">
+      <% %w[whoami work stack contact fun feed help].each do |cmd| %>
+        <button type="button" class="term__chip" data-action="terminal#chip" data-cmd="<%= cmd %>"><%= cmd %></button>
+      <% end %>
+    </nav>
+  </section>
+
+  <div class="term__critters" data-terminal-target="critters"></div>
+  <div class="term__fx" aria-hidden="true"></div>
+</div>

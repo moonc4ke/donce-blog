@@ -25,13 +25,12 @@ Rails.application.routes.draw do
 
   post "preview", to: "blog_posts#preview"
 
-  get "home", to: "home#index"
   get "blog", to: "blog_posts#index"
-  get "projects", to: "projects#index"
-  get "podcast", to: "podcast#index"
-  get "about", to: "about#index"
-  get "tools", to: "tools#index"
 
-  # Defines the root path route ("/")
-  root "home#index"
+  # The old pages are gone; the terminal knows everything now.
+  %w[home projects podcast about tools].each do |page|
+    get page, to: redirect("/")
+  end
+
+  root "terminal#index"
 end

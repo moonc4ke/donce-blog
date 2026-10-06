@@ -68,9 +68,10 @@ bin/rails db:seed
 
 ## Content
 
-- Home: `app/views/home/index.html.erb`
-- About: `app/views/about/index.html.erb`
-- Projects: `app/views/projects/index.html.erb`
+- Home is a terminal chat: `app/views/terminal/index.html.erb`
+- Terminal answers and commands: `app/javascript/terminal/brain.js`
+- The letter-eating pixel monster: `app/javascript/terminal/mooncake.js`
+- Terminal styles (separate from the blog styles): `app/assets/terminal/terminal.css`
 - Public profile copy: `docs/profile-copy.md`
 - Public wording glossary: `CONTEXT.md`
 
