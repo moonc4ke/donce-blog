@@ -267,7 +267,7 @@ export default class extends Controller {
   async typeInto(node, text) {
     let i = 0
     while (i < text.length) {
-      if (this.fastForward) {
+      if (this.fastForward || document.hidden) {
         node.data = text
         return
       }
@@ -290,7 +290,7 @@ export default class extends Controller {
     el.textContent = `${SPINNER[0]} ${label}...`
     this.scrollDown()
     const end = performance.now() + 450 + Math.random() * 800
-    while (performance.now() < end && !this.fastForward) await sleep(40)
+    while (performance.now() < end && !this.fastForward && !document.hidden) await sleep(40)
     clearInterval(spin)
     el.remove()
   }
