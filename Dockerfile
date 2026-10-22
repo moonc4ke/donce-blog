@@ -48,6 +48,10 @@ RUN bundle exec bootsnap precompile app/ lib/
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
+# Make the app readable (not writable) by the rails user even when the build
+# context was checked out with a strict umask, e.g. Kamal's clone under umask 077
+RUN chmod -R go=u-w /rails
+
 
 
 
