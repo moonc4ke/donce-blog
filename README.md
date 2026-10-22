@@ -10,7 +10,7 @@ Active Storage, and Kamal deployment to a self-hosted server.
 ## Stack
 
 - Rails 8
-- Ruby from `.tool-versions` for local development
+- Ruby 3.4 from `.ruby-version` (local development, CI and the Dockerfile)
 - SQLite with Solid Cache, Solid Queue, and Solid Cable
 - Importmap + Stimulus
 - Redcarpet and Rouge for Markdown/code rendering

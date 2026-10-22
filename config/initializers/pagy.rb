@@ -127,7 +127,7 @@
 
 # Number of page slots to show in navigation
 # See https://ddnexus.github.io/pagy/docs/api/options
-Pagy.options[:slots] = 7
+Pagy::OPTIONS[:slots] = 7
 
 
 # Feature Extras
@@ -150,7 +150,7 @@ Pagy.options[:slots] = 7
 # Overflow extra: Allow for easy handling of overflowing pages
 # See https://ddnexus.github.io/pagy/docs/extras/overflow
 # require 'pagy/extras/overflow'
-Pagy.options[:overflow] = :last_page
+Pagy::OPTIONS[:overflow] = :last_page
 
 # Trim extra: Remove the page=1 param from links
 # See https://ddnexus.github.io/pagy/docs/extras/trim
@@ -214,4 +214,4 @@ Rails.application.config.assets.paths << Pagy::ROOT.join("javascripts")
 # require 'pagy/extras/i18n'
 
 # When you are done setting your own default freeze it, so it will not get changed accidentally
-Pagy.options.freeze
+Pagy::OPTIONS.freeze
