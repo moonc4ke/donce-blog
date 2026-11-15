@@ -3,3 +3,14 @@
 
 ignore:
   - CVE-THAT-DOES-NOT-APPLY
+  # msgpack: only its JRuby decoder is affected, and the app runs CRuby. Goes with the next msgpack update.
+  - CVE-2026-126366
+  # puma: fixed in 7.2.2, released 2026-11-13. Held until that release has been out three days;
+  # puma is updated on 2026-11-16 and these lines go with it.
+  - GHSA-86xc-wrr9-xmmq
+  - GHSA-jm4r-w4xx-qxw7
+  - GHSA-m5xw-3hrw-qcmf
+  - GHSA-r885-m39c-939g
+  - GHSA-rf6g-xhmp-gm7v
+  - GHSA-x646-wp7c-h9mg
+  - GHSA-xw3h-pgr9-3vg7
