@@ -2,6 +2,7 @@
 require "rubygems"
 require "bundler/setup"
 
-ARGV.unshift("--ensure-latest")
+# A newer Brakeman fails the scan once it has been out four days (new gems wait three).
+ARGV.unshift("--ensure-latest=4")
 
 load Gem.bin_path("brakeman", "brakeman")
